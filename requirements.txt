@@ -1,0 +1,12 @@
+# PyTorch nightly with CUDA 12.8 (RTX 5090 sm_120 support)
+--extra-index-url https://download.pytorch.org/whl/nightly/cu128
+torch
+torchvision
+torchaudio
+
+# GPU monitoring and management
+pynvml>=11.450.129
+gpustat
+
+# Project dependencies (expand as needed in later phases)
+python-dotenv
