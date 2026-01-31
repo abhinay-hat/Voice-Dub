@@ -149,11 +149,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BATCH-02 | Phase 10 | Pending |
 | BATCH-03 | Phase 10 | Pending |
 | BATCH-04 | Phase 10 | Pending |
-| PERF-01 | Phase 1 | Pending |
+| PERF-01 | Phase 1 | Complete |
 | PERF-02 | Phase 9 | Pending |
 | PERF-03 | Phase 9 | Pending |
 | PERF-04 | Phase 9 | Pending |
-| PERF-05 | Phase 1 | Pending |
+| PERF-05 | Phase 1 | Complete |
 | UX-01 | Phase 11 | Pending |
 | UX-02 | Phase 11 | Pending |
 | UX-03 | Phase 11 | Pending |
