@@ -165,11 +165,11 @@ def extract_streams(
         ...     result = extract_streams("video.mp4", temp.temp_dir)
         ...     print(f"Audio: {result.audio_path}, Video: {result.video_path}")
     """
-    video_path = Path(video_path)
+    input_video_path = Path(video_path)
     temp_dir = Path(temp_dir)
 
     # Get video metadata
-    video_info = get_video_info(video_path)
+    video_info = get_video_info(input_video_path)
 
     # Determine video-only output extension based on container format
     video_ext_map = {
@@ -180,18 +180,18 @@ def extract_streams(
     video_ext = video_ext_map.get(video_info.container_format, 'mp4')
 
     # Define output paths
-    audio_path = temp_dir / 'audio.wav'
-    video_path = temp_dir / f'video_only.{video_ext}'
+    audio_output_path = temp_dir / 'audio.wav'
+    video_output_path = temp_dir / f'video_only.{video_ext}'
 
     # Extract audio stream
-    extract_audio(video_path, audio_path, sample_rate=48000)
+    extract_audio(input_video_path, audio_output_path, sample_rate=48000)
 
     # Extract video stream
-    extract_video_stream(video_path, video_path)
+    extract_video_stream(input_video_path, video_output_path)
 
     return ExtractionResult(
-        audio_path=audio_path,
-        video_path=video_path,
+        audio_path=audio_output_path,
+        video_path=video_output_path,
         duration=video_info.duration,
         sample_rate=48000,
         video_info=video_info
