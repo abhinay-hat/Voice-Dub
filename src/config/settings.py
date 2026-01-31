@@ -43,6 +43,18 @@ SUPPORTED_AUDIO_SAMPLE_RATE = 48000
 ASR_SAMPLE_RATE = 16000  # Required by Whisper and pyannote
 ASR_CONFIDENCE_THRESHOLD = 0.7  # Flag segments below this confidence for review
 
+# Translation settings (Phase 4)
+SEAMLESS_MODEL_ID = "facebook/seamless-m4t-v2-large"  # 2.3B parameters, ~6GB VRAM
+TRANSLATION_TARGET_LANGUAGE = "eng"  # English output
+TRANSLATION_CONFIDENCE_THRESHOLD = 0.7  # Flag segments below this
+TRANSLATION_DURATION_TOLERANCE = 0.1  # ±10% duration fit tolerance
+TRANSLATION_CHARS_PER_SECOND = 15  # English conversational speech rate
+
+# Supported source languages (96 languages supported by SeamlessM4T v2)
+# Reference: https://huggingface.co/facebook/seamless-m4t-v2-large#supported-languages
+# Priority languages: jpn (Japanese), kor (Korean), cmn (Mandarin), spa (Spanish),
+# fra (French), deu (German), hin (Hindi), ara (Arabic)
+
 # Logging
 LOG_LEVEL = "INFO"
 VERBOSE_MEMORY_LOGGING = True
