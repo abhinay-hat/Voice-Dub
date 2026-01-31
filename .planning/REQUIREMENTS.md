@@ -123,11 +123,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VID-02 | Phase 2 | Pending |
 | VID-03 | Phase 2 | Pending |
 | VID-04 | Phase 2 | Pending |
-| ASR-01 | Phase 3 | Pending |
-| ASR-02 | Phase 3 | Pending |
-| ASR-03 | Phase 3 | Pending |
-| ASR-04 | Phase 3 | Pending |
-| ASR-05 | Phase 3 | Pending |
+| ASR-01 | Phase 3 | Complete |
+| ASR-02 | Phase 3 | Complete |
+| ASR-03 | Phase 3 | Complete |
+| ASR-04 | Phase 3 | Complete |
+| ASR-05 | Phase 3 | Complete |
 | TRAN-01 | Phase 4 | Pending |
 | TRAN-02 | Phase 4 | Pending |
 | TRAN-03 | Phase 4 | Pending |

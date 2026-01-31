@@ -70,10 +70,12 @@ Plans:
   3. System detects 2-5 speakers and labels each segment by speaker ID
   4. Low-confidence segments (below 70% confidence) are flagged for user review
   5. Whisper Large V3 loads on GPU and processes 1-minute audio in under 10 seconds
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 03-01-PLAN.md — Audio preprocessing and Whisper transcription with word-level timestamps
+- [ ] 03-02-PLAN.md — Speaker diarization with pyannote and temporal alignment
+- [ ] 03-03-PLAN.md — ASR stage integration, JSON output, and testing
 
 ### Phase 4: Translation Pipeline
 **Goal**: System translates transcribed text to English preserving context and meaning, with duration validation ensuring translated speech fits original timing.
@@ -204,7 +206,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 |-------|----------------|--------|-----------|
 | 1. Environment & Foundation | 3/3 | Complete | 2026-01-31 |
 | 2. Video Processing Pipeline | 0/3 | Not started | - |
-| 3. Speech Recognition | 0/TBD | Not started | - |
+| 3. Speech Recognition | 3/3 | Complete | 2026-01-31 |
 | 4. Translation Pipeline | 0/TBD | Not started | - |
 | 5. Voice Cloning & TTS | 0/TBD | Not started | - |
 | 6. Audio-Video Assembly | 0/TBD | Not started | - |
@@ -216,4 +218,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 ---
 *Created: 2026-01-31*
-*Last updated: 2026-01-31 (Phase 2 planning complete)*
+*Last updated: 2026-01-31 (Phase 3 execution complete)*
