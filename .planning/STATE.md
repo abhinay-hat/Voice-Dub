@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 3 of 11 (Speech Recognition)
-Plan: 3 of 3 (complete)
-Status: Phase complete
-Last activity: 2026-01-31 — Completed 03-03-PLAN.md (ASR Stage Integration)
+Phase: 4 of 11 (Translation Pipeline)
+Plan: 2 of 3 (in progress)
+Status: In progress
+Last activity: 2026-01-31 — Completed 04-02-PLAN.md (Duration Validation and Candidate Ranking)
 
-Progress: [████░░░░░░] 43%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 53 minutes
-- Total execution time: 7.1 hours
+- Total plans completed: 9
+- Average duration: 47 minutes
+- Total execution time: 7.3 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [████░░░░░░] 43%
 | 01    | 3     | 358m  | 119m     |
 | 02    | 2     | 7m    | 3.5m     |
 | 03    | 3     | 12m   | 4m       |
+| 04    | 1     | 10m   | 10m      |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (3m), 03-01 (3m), 03-02 (3m), 03-03 (6m)
-- Trend: Foundation-building plans fast (3-6m average), Phase 3 complete
+- Last 5 plans: 03-01 (3m), 03-02 (3m), 03-03 (6m), 04-02 (10m)
+- Trend: Implementation plans accelerating (3-10m average), Phase 4 in progress
 
 *Updated after each plan completion*
 
@@ -126,6 +127,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | progress-callback-pattern | Support optional progress callbacks | Enables responsive Gradio UI integration | ✅ Implemented |
 | automatic-cleanup | Cleanup models and temp files after ASR | Prevents VRAM/disk leaks in sequential pipeline | ✅ Implemented |
 
+**Phase 04-02 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| character-count-duration | Use character-count heuristic (15 chars/sec) for duration estimation | Instant calculation vs linguistic analysis overhead | ✅ Implemented |
+| linear-penalty-scoring | Linear penalty within tolerance, 0.0 outside | Gradual degradation for acceptable translations, hard cutoff for invalid | ✅ Implemented |
+| 60-40-weight-split | Default 60% confidence / 40% duration weights | Speed-first priority with duration constraints for downstream stages | ✅ Implemented |
+| detailed-validation-dict | Return dict with all metadata from validate_duration() | Enables debugging and transparent decision-making | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -158,9 +168,14 @@ None yet.
 - ✅ HuggingFace token documentation for users
 - ⚠️ Requires user setup: pyannote.audio installation + HuggingFace token
 
+**Phase 4 In Progress:** Translation pipeline (2/3 plans complete)
+- ✅ SeamlessM4T v2 translator wrapper (04-01)
+- ✅ Duration validation and candidate ranking (04-02)
+- 🔄 Translation stage integration (04-03, next)
+
 ## Session Continuity
 
-Last session: 2026-01-31 (plan 03-03 execution)
-Stopped at: Completed 03-03-PLAN.md - ASR stage integration and testing
+Last session: 2026-01-31 (plan 04-02 execution)
+Stopped at: Completed 04-02-PLAN.md - Duration validation and candidate ranking
 Resume file: None
-Next: Phase 4 - Translation (SeamlessM4T v2)
+Next: 04-03 - Translation stage integration with multi-candidate generation
