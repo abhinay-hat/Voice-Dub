@@ -8,10 +8,13 @@ from .video_utils import (
     detect_container_format,
     validate_video_file,
 )
+from .pipeline import process_video, ProcessingResult
 
 __all__ = [
     "probe_video",
     "get_video_info",
     "detect_container_format",
     "validate_video_file",
+    "process_video",
+    "ProcessingResult",
 ]
