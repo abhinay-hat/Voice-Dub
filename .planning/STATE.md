@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 11 (Translation Pipeline)
-Plan: 2 of 3 (in progress)
+Plan: 2 of 4 (complete)
 Status: In progress
-Last activity: 2026-01-31 — Completed 04-02-PLAN.md (Duration Validation and Candidate Ranking)
+Last activity: 2026-01-31 — Completed 04-01-PLAN.md (SeamlessM4T Model Setup)
 
 Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 47 minutes
-- Total execution time: 7.3 hours
+- Total plans completed: 10
+- Average duration: 44 minutes
+- Total execution time: 7.4 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [█████░░░░░] 50%
 | 01    | 3     | 358m  | 119m     |
 | 02    | 2     | 7m    | 3.5m     |
 | 03    | 3     | 12m   | 4m       |
-| 04    | 1     | 10m   | 10m      |
+| 04    | 2     | 22m   | 11m      |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (3m), 03-02 (3m), 03-03 (6m), 04-02 (10m)
-- Trend: Implementation plans accelerating (3-10m average), Phase 4 in progress
+- Last 5 plans: 03-02 (3m), 03-03 (6m), 04-01 (12m), 04-02 (10m)
+- Trend: Implementation plans accelerating (3-12m average), Phase 4 in progress
 
 *Updated after each plan completion*
 
@@ -127,6 +127,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | progress-callback-pattern | Support optional progress callbacks | Enables responsive Gradio UI integration | ✅ Implemented |
 | automatic-cleanup | Cleanup models and temp files after ASR | Prevents VRAM/disk leaks in sequential pipeline | ✅ Implemented |
 
+**Phase 04-01 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| seamless-fp16 | Use fp16 (float16) for SeamlessM4T inference | Halves VRAM usage (~2.5GB vs ~5GB) with negligible quality impact | ✅ Implemented |
+| greedy-decoding-first | Implement greedy decoding before beam search | Simpler baseline, beam search added in 04-02 for multi-candidate | ✅ Implemented |
+| lazy-model-loading | Defer model loading until first translate call | Allows translator instantiation without immediate VRAM allocation | ✅ Implemented |
+| sentencepiece-upgrade | Upgrade sentencepiece to 0.2.1 for protobuf compatibility | Fixes "Descriptors cannot be created directly" error | ✅ Implemented |
+
 **Phase 04-02 Decisions:**
 
 | ID | Title | Impact | Status |
@@ -168,14 +177,15 @@ None yet.
 - ✅ HuggingFace token documentation for users
 - ⚠️ Requires user setup: pyannote.audio installation + HuggingFace token
 
-**Phase 4 In Progress:** Translation pipeline (2/3 plans complete)
-- ✅ SeamlessM4T v2 translator wrapper (04-01)
+**Phase 4 In Progress:** Translation pipeline (2/4 plans complete)
+- ✅ SeamlessM4T v2 translator wrapper with fp16 optimization (04-01)
 - ✅ Duration validation and candidate ranking (04-02)
 - 🔄 Translation stage integration (04-03, next)
+- 🔄 Multi-candidate beam search (04-04)
 
 ## Session Continuity
 
-Last session: 2026-01-31 (plan 04-02 execution)
-Stopped at: Completed 04-02-PLAN.md - Duration validation and candidate ranking
+Last session: 2026-01-31 (plan 04-01 execution)
+Stopped at: Completed 04-01-PLAN.md - SeamlessM4T model setup with translator wrapper
 Resume file: None
 Next: 04-03 - Translation stage integration with multi-candidate generation
