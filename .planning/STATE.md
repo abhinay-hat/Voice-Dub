@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 3 of 11 (Speech Recognition)
-Plan: 2 of 3 (complete)
-Status: In progress
-Last activity: 2026-01-31 — Completed 03-02-PLAN.md (Speaker Diarization & Temporal Alignment)
+Plan: 3 of 3 (complete)
+Status: Phase complete
+Last activity: 2026-01-31 — Completed 03-03-PLAN.md (ASR Stage Integration)
 
-Progress: [████░░░░░░] 40%
+Progress: [████░░░░░░] 43%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
-- Average duration: 57 minutes
-- Total execution time: 6.6 hours
+- Total plans completed: 8
+- Average duration: 53 minutes
+- Total execution time: 7.1 hours
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [████░░░░░░] 40%
 |-------|-------|-------|----------|
 | 01    | 3     | 358m  | 119m     |
 | 02    | 2     | 7m    | 3.5m     |
-| 03    | 2     | 6m    | 3m       |
+| 03    | 3     | 12m   | 4m       |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (4m), 02-02 (3m), 03-01 (3m), 03-02 (3m)
-- Trend: Foundation-building plans consistently fast (3m average for last 4 plans)
+- Last 5 plans: 02-02 (3m), 03-01 (3m), 03-02 (3m), 03-03 (6m)
+- Trend: Foundation-building plans fast (3-6m average), Phase 3 complete
 
 *Updated after each plan completion*
 
@@ -118,6 +118,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | nearest-speaker-fallback | Assign words to nearest speaker when no overlap | Prevents "UNKNOWN" speakers from timestamp mismatches | ✅ Implemented |
 | speaker-contiguous-grouping | Group consecutive words by speaker into segments | Structured output for downstream stages | ✅ Implemented |
 
+**Phase 03-03 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| json-transcript-format | Export ASR results to JSON with nested structure | Enables downstream stages to consume structured transcripts | ✅ Implemented |
+| progress-callback-pattern | Support optional progress callbacks | Enables responsive Gradio UI integration | ✅ Implemented |
+| automatic-cleanup | Cleanup models and temp files after ASR | Prevents VRAM/disk leaks in sequential pipeline | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -137,9 +145,22 @@ None yet.
 - ✅ Automated test suite validates environment
 - ✅ Setup documentation enables reproduction
 
+**Phase 2 Complete:** Video processing pipeline ready
+- ✅ FFmpeg-based video/audio extraction with stream copy
+- ✅ Format normalization and codec selection
+- ✅ Progress callback pattern for UI integration
+
+**Phase 3 Complete:** Speech recognition pipeline ready
+- ✅ Whisper Large V3 transcription with word-level timestamps
+- ✅ Pyannote speaker diarization (2-5 speakers)
+- ✅ Temporal alignment merging transcription with speakers
+- ✅ Complete ASR stage orchestration with JSON export
+- ✅ HuggingFace token documentation for users
+- ⚠️ Requires user setup: pyannote.audio installation + HuggingFace token
+
 ## Session Continuity
 
-Last session: 2026-01-31 (plan 03-02 execution)
-Stopped at: Completed 03-02-PLAN.md - Speaker diarization and temporal alignment with pyannote
+Last session: 2026-01-31 (plan 03-03 execution)
+Stopped at: Completed 03-03-PLAN.md - ASR stage integration and testing
 Resume file: None
-Next: Plan 03-03 - ASR stage integration and testing
+Next: Phase 4 - Translation (SeamlessM4T v2)
