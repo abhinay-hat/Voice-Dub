@@ -22,10 +22,10 @@
 
 ### Translation
 
-- [ ] **TRAN-01**: System translates transcribed text to English
-- [ ] **TRAN-02**: System preserves context and meaning in translation
-- [ ] **TRAN-03**: System validates translated text duration matches original timing
-- [ ] **TRAN-04**: System supports 20-30 source languages (prioritize: Japanese, Korean, Chinese, Spanish, French, German, Hindi, Arabic)
+- [x] **TRAN-01**: System translates transcribed text to English
+- [x] **TRAN-02**: System preserves context and meaning in translation
+- [x] **TRAN-03**: System validates translated text duration matches original timing
+- [x] **TRAN-04**: System supports 20-30 source languages (prioritize: Japanese, Korean, Chinese, Spanish, French, German, Hindi, Arabic)
 
 ### Voice Cloning & TTS
 
@@ -128,10 +128,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ASR-03 | Phase 3 | Complete |
 | ASR-04 | Phase 3 | Complete |
 | ASR-05 | Phase 3 | Complete |
-| TRAN-01 | Phase 4 | Pending |
-| TRAN-02 | Phase 4 | Pending |
-| TRAN-03 | Phase 4 | Pending |
-| TRAN-04 | Phase 4 | Pending |
+| TRAN-01 | Phase 4 | Complete |
+| TRAN-02 | Phase 4 | Complete |
+| TRAN-03 | Phase 4 | Complete |
+| TRAN-04 | Phase 4 | Complete |
 | TTS-01 | Phase 5 | Pending |
 | TTS-02 | Phase 5 | Pending |
 | TTS-03 | Phase 5 | Pending |
