@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Environment & Foundation** - CUDA setup and project scaffolding
 - [ ] **Phase 2: Video Processing Pipeline** - Video upload, extraction, and merging
-- [ ] **Phase 3: Speech Recognition** - Transcription with speaker diarization
+- [x] **Phase 3: Speech Recognition** - Transcription with speaker diarization
 - [ ] **Phase 4: Translation Pipeline** - Context-aware English translation
 - [ ] **Phase 5: Voice Cloning & TTS** - Speaker voice cloning with emotion preservation
 - [ ] **Phase 6: Audio-Video Assembly** - Sync infrastructure and duration validation
@@ -56,8 +56,8 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — FFmpeg setup, video probing utilities, and temp file manager
-- [ ] 02-02-PLAN.md — Audio/video extraction, stream merging, and pipeline orchestration
+- [x] 02-01-PLAN.md — FFmpeg setup, video probing utilities, and temp file manager
+- [x] 02-02-PLAN.md — Audio/video extraction, stream merging, and pipeline orchestration
 - [ ] 02-03-PLAN.md — Gradio web interface and end-to-end verification
 
 ### Phase 3: Speech Recognition
@@ -73,9 +73,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Audio preprocessing and Whisper transcription with word-level timestamps
-- [ ] 03-02-PLAN.md — Speaker diarization with pyannote and temporal alignment
-- [ ] 03-03-PLAN.md — ASR stage integration, JSON output, and testing
+- [x] 03-01-PLAN.md — Audio preprocessing and Whisper transcription with word-level timestamps
+- [x] 03-02-PLAN.md — Speaker diarization with pyannote and temporal alignment
+- [x] 03-03-PLAN.md — ASR stage integration, JSON output, and testing
 
 ### Phase 4: Translation Pipeline
 **Goal**: System translates transcribed text to English preserving context and meaning, with duration validation ensuring translated speech fits original timing.
@@ -87,10 +87,13 @@ Plans:
   3. Translated text duration matches original segment timing (within 10% tolerance)
   4. System supports 20-30 source languages (same as ASR coverage)
   5. SeamlessM4T v2 loads on GPU without evicting Whisper (32GB VRAM sufficient)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 04-01-PLAN.md — SeamlessM4T model setup and single-segment translation
+- [ ] 04-02-PLAN.md — Duration validation and candidate ranking modules
+- [ ] 04-03-PLAN.md — Multi-candidate generation and context chunking
+- [ ] 04-04-PLAN.md — Translation stage orchestration and integration testing
 
 ### Phase 5: Voice Cloning & TTS
 **Goal**: System generates English audio that clones each speaker's voice and emotional tone from 6-10 second reference samples, delivering recognizable similarity.
@@ -205,9 +208,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Environment & Foundation | 3/3 | Complete | 2026-01-31 |
-| 2. Video Processing Pipeline | 0/3 | Not started | - |
+| 2. Video Processing Pipeline | 2/3 | In Progress | - |
 | 3. Speech Recognition | 3/3 | Complete | 2026-01-31 |
-| 4. Translation Pipeline | 0/TBD | Not started | - |
+| 4. Translation Pipeline | 0/4 | Not started | - |
 | 5. Voice Cloning & TTS | 0/TBD | Not started | - |
 | 6. Audio-Video Assembly | 0/TBD | Not started | - |
 | 7. Lip Synchronization | 0/TBD | Not started | - |
@@ -218,4 +221,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 ---
 *Created: 2026-01-31*
-*Last updated: 2026-01-31 (Phase 3 execution complete)*
+*Last updated: 2026-01-31 (Phase 4 planning complete)*
