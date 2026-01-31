@@ -39,6 +39,10 @@ MAX_VIDEO_DURATION_MINUTES = 30
 SUPPORTED_VIDEO_FORMATS = [".mp4", ".mkv", ".avi", ".mov"]
 SUPPORTED_AUDIO_SAMPLE_RATE = 48000
 
+# ASR (Automatic Speech Recognition) settings
+ASR_SAMPLE_RATE = 16000  # Required by Whisper and pyannote
+ASR_CONFIDENCE_THRESHOLD = 0.7  # Flag segments below this confidence for review
+
 # Logging
 LOG_LEVEL = "INFO"
 VERBOSE_MEMORY_LOGGING = True
