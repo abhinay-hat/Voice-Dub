@@ -10,3 +10,6 @@ gpustat
 
 # Project dependencies (expand as needed in later phases)
 python-dotenv
+
+# Video processing
+ffmpeg-python>=0.2.0
