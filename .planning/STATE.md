@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 2 of 11 (Video Processing Pipeline)
-Plan: 1 of 3 (in progress)
+Plan: 2 of 3 (in progress)
 Status: In progress
-Last activity: 2026-01-31 — Completed 02-01-PLAN.md (Video Processing Foundation)
+Last activity: 2026-01-31 — Completed 02-02-PLAN.md (Video Processing Core)
 
-Progress: [███░░░░░░░] 33%
+Progress: [███░░░░░░░] 36%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 91 minutes
-- Total execution time: 6.1 hours
+- Total plans completed: 5
+- Average duration: 74 minutes
+- Total execution time: 6.2 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 3     | 358m  | 119m     |
-| 02    | 1     | 4m    | 4m       |
+| 02    | 2     | 7m    | 3.5m     |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (337m), 01-02 (6m), 01-03 (15m), 02-01 (4m)
-- Trend: Foundation-building plans much faster than initial setup (4-15m vs 337m)
+- Last 5 plans: 01-02 (6m), 01-03 (15m), 02-01 (4m), 02-02 (3m)
+- Trend: Foundation-building plans very fast (3-6m), initial research/setup plans slow (337m)
 
 *Updated after each plan completion*
 
@@ -90,6 +90,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | format-normalization | Normalize container formats to mp4/mkv/avi | Simpler downstream logic vs FFmpeg's complex strings | ✅ Implemented |
 | context-manager-temps | Use context managers for temp file management | Prevents disk space leaks from orphaned files | ✅ Implemented |
 
+**Phase 02-02 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| stream-copy-extraction | Use stream copy for video extraction (no re-encoding) | Preserves exact video quality and 10-100x speedup | ✅ Implemented |
+| format-specific-codecs | Select audio codec based on output container format | MP4 needs AAC, MKV supports copy, AVI needs MP3 | ✅ Implemented |
+| progress-callback-pattern | Use progress callback for UI integration | Enables Gradio progress bars without tight coupling | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -111,7 +119,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 (plan 02-01 execution)
-Stopped at: Completed 02-01-PLAN.md - FFmpeg foundation, video probing utilities, temp file manager
+Last session: 2026-01-31 (plan 02-02 execution)
+Stopped at: Completed 02-02-PLAN.md - Audio/video extraction, stream merging, pipeline orchestration
 Resume file: None
-Next: Plan 02-02 - Audio/video extraction, stream merging, pipeline orchestration
+Next: Plan 02-03 - Gradio interface and integration testing
