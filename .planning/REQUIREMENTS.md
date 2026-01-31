@@ -119,13 +119,54 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be filled during roadmap creation) | | |
+| VID-01 | Phase 2 | Pending |
+| VID-02 | Phase 2 | Pending |
+| VID-03 | Phase 2 | Pending |
+| VID-04 | Phase 2 | Pending |
+| ASR-01 | Phase 3 | Pending |
+| ASR-02 | Phase 3 | Pending |
+| ASR-03 | Phase 3 | Pending |
+| ASR-04 | Phase 3 | Pending |
+| ASR-05 | Phase 3 | Pending |
+| TRAN-01 | Phase 4 | Pending |
+| TRAN-02 | Phase 4 | Pending |
+| TRAN-03 | Phase 4 | Pending |
+| TRAN-04 | Phase 4 | Pending |
+| TTS-01 | Phase 5 | Pending |
+| TTS-02 | Phase 5 | Pending |
+| TTS-03 | Phase 5 | Pending |
+| TTS-04 | Phase 5 | Pending |
+| TTS-05 | Phase 5 | Pending |
+| SYNC-01 | Phase 7 | Pending |
+| SYNC-02 | Phase 7 | Pending |
+| SYNC-03 | Phase 7 | Pending |
+| SYNC-04 | Phase 7 | Pending |
+| QC-01 | Phase 8 | Pending |
+| QC-02 | Phase 8 | Pending |
+| QC-03 | Phase 8 | Pending |
+| QC-04 | Phase 8 | Pending |
+| BATCH-01 | Phase 10 | Pending |
+| BATCH-02 | Phase 10 | Pending |
+| BATCH-03 | Phase 10 | Pending |
+| BATCH-04 | Phase 10 | Pending |
+| PERF-01 | Phase 1 | Pending |
+| PERF-02 | Phase 9 | Pending |
+| PERF-03 | Phase 9 | Pending |
+| PERF-04 | Phase 9 | Pending |
+| PERF-05 | Phase 1 | Pending |
+| UX-01 | Phase 11 | Pending |
+| UX-02 | Phase 11 | Pending |
+| UX-03 | Phase 11 | Pending |
+| UX-04 | Phase 11 | Pending |
+| UX-05 | Phase 11 | Pending |
 
 **Coverage:**
 - v1 requirements: 35 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 35 ⚠️
+- Mapped to phases: 35
+- Unmapped: 0
+
+**Phase 6 Note:** Audio-Video Assembly has no explicit requirements but provides critical infrastructure for Phase 7 (Lip Synchronization). Success criteria derived from integration needs.
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-01-31 after initial definition*
+*Last updated: 2026-01-31 after roadmap creation (100% coverage validated)*
