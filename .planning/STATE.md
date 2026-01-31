@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 4 of 11 (Translation Pipeline)
-Plan: 3 of 4 (complete)
-Status: In progress
-Last activity: 2026-01-31 — Completed 04-03-PLAN.md (Multi-Candidate Generation and Context Chunking)
+Plan: 4 of 4 (complete)
+Status: Phase complete
+Last activity: 2026-01-31 — Completed 04-04-PLAN.md (Translation Stage Integration)
 
-Progress: [█████░░░░░] 54%
+Progress: [█████░░░░░] 58%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
-- Average duration: 52 minutes
-- Total execution time: 9.0 hours
+- Total plans completed: 12
+- Average duration: 47 minutes
+- Total execution time: 9.1 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [█████░░░░░] 54%
 | 01    | 3     | 358m  | 119m     |
 | 02    | 2     | 7m    | 3.5m     |
 | 03    | 3     | 12m   | 4m       |
-| 04    | 3     | 119m  | 40m      |
+| 04    | 4     | 126m  | 31.5m    |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (6m), 04-01 (12m), 04-02 (10m), 04-03 (97m)
-- Trend: Phase 4 averaging 40m per plan, plan 04-03 took longer due to comprehensive test suites
+- Last 5 plans: 04-01 (12m), 04-02 (10m), 04-03 (97m), 04-04 (7m)
+- Trend: Phase 4 complete at 31.5m average, plan 04-04 was fastest (orchestration only)
 
 *Updated after each plan completion*
 
@@ -155,6 +155,16 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | later-chunk-wins | Later chunks override earlier for overlapped segments | More context from subsequent segments improves quality | ✅ Implemented |
 | compute-transition-scores | Use compute_transition_scores for confidence | Official Transformers method for per-token log probabilities | ✅ Implemented |
 
+**Phase 04-04 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| stage-orchestration-pattern | Stage orchestration mirrors ASR pattern | Consistency across pipeline stages for maintainability | ✅ Implemented |
+| conditional-chunking-1024 | Conditional chunking at 1024 token threshold | Automatic strategy selection based on transcript length | ✅ Implemented |
+| duration-validation-10pct | Duration validation flags segments outside ±10% | Ensures lip sync compatibility with timing constraints | ✅ Implemented |
+| confidence-threshold-07 | Confidence flagging threshold at 0.7 | Balances quality and coverage for Phase 8 review | ✅ Implemented |
+| utf8-json-export | JSON export uses ensure_ascii=False | Preserves non-English characters in original text | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -187,15 +197,16 @@ None yet.
 - ✅ HuggingFace token documentation for users
 - ⚠️ Requires user setup: pyannote.audio installation + HuggingFace token
 
-**Phase 4 In Progress:** Translation pipeline (3/4 plans complete)
+**Phase 4 Complete:** Translation pipeline (4/4 plans complete, 2026-01-31)
 - ✅ SeamlessM4T v2 translator wrapper with fp16 optimization (04-01)
 - ✅ Duration validation and candidate ranking (04-02)
 - ✅ Multi-candidate beam search and context chunking (04-03)
-- 🔄 Translation stage integration (04-04, next)
+- ✅ Translation stage integration with JSON I/O (04-04)
+- Ready for Phase 5: Voice cloning pipeline integration
 
 ## Session Continuity
 
-Last session: 2026-01-31 (plan 04-03 execution)
-Stopped at: Completed 04-03-PLAN.md - Multi-candidate generation and context chunking
+Last session: 2026-01-31 (plan 04-04 execution)
+Stopped at: Completed 04-04-PLAN.md - Translation stage integration
 Resume file: None
-Next: 04-04 - Translation stage integration with full pipeline orchestration
+Next: Phase 5 - Voice Cloning Pipeline (XTTS-v2 integration)
