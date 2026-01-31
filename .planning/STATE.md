@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Watch any video content in English while preserving the original speaker's voice characteristics and emotional expression, without relying on cloud services or paying API fees.
-**Current focus:** Phase 1: Environment & Foundation
+**Current focus:** Phase 2: Video Processing Pipeline
 
 ## Current Position
 
-Phase: 1 of 11 (Environment & Foundation)
-Plan: 3 of 3 (phase complete)
-Status: Phase 1 complete
-Last activity: 2026-01-31 — Completed 01-03-PLAN.md (GPU Environment Verification)
+Phase: 2 of 11 (Video Processing Pipeline)
+Plan: 1 of 3 (in progress)
+Status: In progress
+Last activity: 2026-01-31 — Completed 02-01-PLAN.md (Video Processing Foundation)
 
-Progress: [███░░░░░░░] 30%
+Progress: [███░░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 119 minutes
-- Total execution time: 6.0 hours
+- Total plans completed: 4
+- Average duration: 91 minutes
+- Total execution time: 6.1 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01    | 3     | 358m  | 119m     |
+| 02    | 1     | 4m    | 4m       |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (337m), 01-02 (6m), 01-03 (15m)
-- Trend: Plans 01-02 and 01-03 much faster (building on foundation vs initial setup)
+- Last 5 plans: 01-01 (337m), 01-02 (6m), 01-03 (15m), 02-01 (4m)
+- Trend: Foundation-building plans much faster than initial setup (4-15m vs 337m)
 
 *Updated after each plan completion*
 
@@ -81,6 +82,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | hardware-requirements-first | Front-load RTX 5090 requirements in README | Users know compatibility immediately | ✅ Implemented |
 | sm120-troubleshooting | Dedicated troubleshooting for sm_120 issues | Users can self-solve common RTX 5090 problems | ✅ Implemented |
 
+**Phase 02-01 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| ffmpeg-python-wrapper | Use ffmpeg-python over subprocess or MoviePy | 40-100x faster for I/O, type-safe API | ✅ Implemented |
+| format-normalization | Normalize container formats to mp4/mkv/avi | Simpler downstream logic vs FFmpeg's complex strings | ✅ Implemented |
+| context-manager-temps | Use context managers for temp file management | Prevents disk space leaks from orphaned files | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -102,7 +111,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31 (plan 01-03 execution)
-Stopped at: Completed 01-03-PLAN.md - GPU environment verification complete, Phase 1 finished
+Last session: 2026-01-31 (plan 02-01 execution)
+Stopped at: Completed 02-01-PLAN.md - FFmpeg foundation, video probing utilities, temp file manager
 Resume file: None
-Next: Phase 2 - Video Processing Pipeline (begin with video ingestion and Whisper integration)
+Next: Plan 02-02 - Audio/video extraction, stream merging, pipeline orchestration
