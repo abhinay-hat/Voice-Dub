@@ -58,7 +58,7 @@ class Translator:
             "seamless_m4t_translation",
             lambda: SeamlessM4Tv2ForTextToText.from_pretrained(
                 SEAMLESS_MODEL_ID,
-                torch_dtype=torch.float16  # Half precision for VRAM efficiency
+                dtype=torch.float16  # Half precision for VRAM efficiency
             ).to('cuda')
         )
 
