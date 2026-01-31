@@ -120,6 +120,57 @@ python tests/test_gpu_environment.py
 
 All tests should pass with "ALL TESTS PASSED ✓" message.
 
+## HuggingFace Token Setup (Required for Speaker Diarization)
+
+The speech recognition pipeline uses PyAnnote for speaker diarization, which requires a HuggingFace account and API token.
+
+### Setup Steps
+
+1. **Create HuggingFace Account**
+   - Go to https://huggingface.co/join
+   - Create a free account
+
+2. **Accept Model License**
+   - Visit https://huggingface.co/pyannote/speaker-diarization-community-1
+   - Click "Agree and access repository" to accept the license
+   - **Note**: You must accept this license agreement before the model can be downloaded
+
+3. **Generate API Token**
+   - Go to https://huggingface.co/settings/tokens
+   - Click "New token"
+   - Name it (e.g., "voice-dub")
+   - Select "Read" permission
+   - Click "Generate"
+   - Copy the token (starts with `hf_`)
+
+4. **Set Environment Variable**
+
+   **Windows PowerShell:**
+   ```powershell
+   $env:HUGGINGFACE_TOKEN = "hf_your_token_here"
+   ```
+
+   **Windows CMD:**
+   ```cmd
+   set HUGGINGFACE_TOKEN=hf_your_token_here
+   ```
+
+   **Linux/macOS:**
+   ```bash
+   export HUGGINGFACE_TOKEN="hf_your_token_here"
+   ```
+
+   **Or create a `.env` file** in the project root:
+   ```
+   HUGGINGFACE_TOKEN=hf_your_token_here
+   ```
+
+### Troubleshooting
+
+- **"Repository not found" error**: You haven't accepted the model license. Visit the model page and click "Agree and access repository".
+- **"Authentication required" error**: Token not set or invalid. Verify your token in HuggingFace settings.
+- **Token starts with `hf_`**: This is correct. Older tokens may need to be regenerated.
+
 ## Project Structure
 
 ```
