@@ -191,9 +191,186 @@ voice-dub/
 └── README.md              # This file
 ```
 
+## Pipeline Stages
+
+### Phase 2: Video Processing (Complete)
+**Status**: ✅ Complete (2026-01-31)
+
+**Stage module:** `src/stages/video_extraction.py`
+
+**Capabilities:**
+- FFmpeg-based video/audio extraction with stream copy (no re-encoding)
+- Format normalization (mp4, mkv, avi)
+- Codec-specific handling (AAC for MP4, stream copy for MKV, MP3 for AVI)
+- Progress callback support for UI integration
+
+**Key features:**
+- **Speed**: 10-100x faster than re-encoding (stream copy)
+- **Quality**: Preserves exact original video quality
+- **Format support**: MP4, MKV, AVI containers
+- **Audio**: Extracts to 48kHz WAV for downstream processing
+
+**Usage:**
+```python
+from src.stages.video_extraction import extract_audio_from_video
+
+# Extract audio from video
+audio_path = extract_audio_from_video(
+    video_path="input.mp4",
+    output_audio_path="extracted_audio.wav",
+    progress_callback=lambda p, s: print(f"[{p*100:.0f}%] {s}")
+)
+```
+
+---
+
+### Phase 3: Speech Recognition (Complete)
+**Status**: ✅ Complete (2026-01-31)
+
+**Stage module:** `src/stages/asr_stage.py`
+
+**Capabilities:**
+- Speech-to-text transcription using Whisper Large V3
+- Speaker diarization (2-5 speakers) using PyAnnote
+- Temporal alignment merging transcription with speakers
+- Word-level timestamps for lip sync precision
+- Low-confidence segment flagging for manual review
+- JSON export with structured output
+
+**Key features:**
+- **Accuracy**: Whisper Large V3 (99+ languages, high accuracy)
+- **Diarization**: PyAnnote speaker-diarization-community-1 (better speaker counting)
+- **Speed**: faster-whisper (2-4x speedup, 50% VRAM reduction)
+- **VAD filtering**: Prevents 80% of hallucinations on silence
+- **Memory footprint**: ~4.5GB VRAM (Whisper float16) + ~2GB (PyAnnote)
+
+**Usage:**
+```python
+from src.stages.asr_stage import run_asr_stage
+
+# Transcribe and diarize audio
+result = run_asr_stage(
+    audio_path="extracted_audio.wav",
+    video_id="video123",
+    huggingface_token="hf_your_token_here",
+    progress_callback=lambda p, s: print(f"[{p*100:.0f}%] {s}")
+)
+
+# Access results
+print(f"Language: {result.detected_language}")
+print(f"Speakers: {result.num_speakers}")
+print(f"Segments: {result.total_segments}")
+
+# Iterate over aligned segments
+for segment in result.segments:
+    print(f"[{segment.speaker}] {segment.text}")
+```
+
+**Configuration (in `src/config/settings.py`):**
+```python
+ASR_SAMPLE_RATE = 16000  # Required by Whisper and pyannote
+ASR_CONFIDENCE_THRESHOLD = 0.7  # Flag segments below this confidence
+```
+
+**Testing:**
+```bash
+python tests/test_asr_stage.py
+# Validates transcription, diarization, alignment, JSON export
+```
+
+**Prerequisites:**
+- HuggingFace token (see [HuggingFace Token Setup](#huggingface-token-setup-required-for-speaker-diarization))
+- PyAnnote model license accepted
+
+---
+
+### Phase 4: Translation Pipeline (Complete)
+**Status**: ✅ Complete (2026-01-31)
+
+**Stage module:** `src/stages/translation_stage.py`
+
+**Capabilities:**
+- Neural machine translation from 96 languages to English using Meta SeamlessM4T v2 Large (2.3B parameters)
+- Multi-candidate generation with beam search for quality optimization
+- Duration-aware translation selection (±10% timing tolerance for lip sync compatibility)
+- Context preservation across segments (no isolated sentence translation)
+- Speaker-aware translation maintaining conversational coherence
+- Automatic chunking with overlap for long videos (>15 minutes)
+- Low-confidence segment flagging for manual review (Phase 8)
+- Progress callback support for UI integration
+
+**Key features:**
+- **Supported languages (96 total)**: Japanese, Korean, Mandarin, Spanish, French, German, Hindi, Arabic, and 88 more
+- **Speed-first approach**: 3-candidate beam search balances quality and processing time
+- **Context window**: 1024 tokens with 128-token overlap for cross-segment context
+- **Memory footprint**: ~6GB VRAM for SeamlessM4T v2 Large
+- **Duration validation**: Character-count heuristic (15 chars/second for English speech)
+
+**Usage:**
+```python
+from src.stages.translation_stage import run_translation_stage
+
+# Translate ASR output to English
+result = run_translation_stage(
+    asr_json_path="data/temp/video123_transcript.json",
+    output_json_path="data/temp/video123_translation.json",
+    num_candidates=3,  # Beam width for candidate generation
+    progress_callback=lambda p, s: print(f"[{p*100:.0f}%] {s}")
+)
+
+# Check results
+print(f"Translated {result.total_segments} segments")
+print(f"Average confidence: {result.avg_confidence:.2f}")
+print(f"Flagged for review: {result.flagged_count} segments")
+
+# Access translated segments
+for segment in result.segments:
+    print(f"[{segment.speaker}] {segment.translated_text}")
+```
+
+**Pipeline flow:**
+1. Load ASR JSON (speaker-labeled transcript with timestamps)
+2. Determine chunking strategy (single batch vs overlapping chunks)
+3. Load SeamlessM4T v2 via ModelManager
+4. Translate segments with 3-candidate beam search
+5. Rank candidates by confidence (60%) + duration fit (40%)
+6. Select best translation per segment
+7. Validate duration constraints (flag if outside ±10%)
+8. Flag low-confidence segments (<70% threshold)
+9. Export translated JSON with all metadata
+10. Cleanup model and CUDA cache
+
+**Configuration (in `src/config/settings.py`):**
+```python
+SEAMLESS_MODEL_ID = "facebook/seamless-m4t-v2-large"
+TRANSLATION_TARGET_LANGUAGE = "eng"
+TRANSLATION_CONFIDENCE_THRESHOLD = 0.7  # Flag segments below this
+TRANSLATION_DURATION_TOLERANCE = 0.1  # ±10% duration fit
+TRANSLATION_CHARS_PER_SECOND = 15  # English speech rate
+TRANSLATION_NUM_CANDIDATES = 3  # Beam width
+TRANSLATION_BATCH_SIZE = 8  # Process N segments at a time
+TRANSLATION_MAX_CHUNK_TOKENS = 1024  # Chunking threshold
+TRANSLATION_OVERLAP_TOKENS = 128  # Context preservation overlap
+```
+
+**Testing:**
+```bash
+python tests/test_translation_stage.py
+# Validates multi-language translation, chunking, duration constraints, flagging
+```
+
+**Key Decisions:**
+- **SeamlessM4T v2 over NLLB-200**: Better multilingual quality, speech-aware translation
+- **Beam search (3 candidates) over greedy**: Enables duration-aware selection with minimal speed cost
+- **Character-count duration heuristic**: Fast estimation, good enough for ±10% tolerance
+- **Full-context batching with overlap**: Prevents pronoun/reference errors from isolated translation
+- **Speed-first priority**: 3-candidate beam (not 5-10) for fast 20-minute video processing
+
+---
+
 ## Usage
 
-*(To be added in Phase 2+)*
+*(Full pipeline integration to be added in Phase 5+)*
 
 ## Development
 
@@ -290,6 +467,23 @@ CUDA allocator configured with:
 
 These settings are automatically applied via `src/utils/gpu_validation.py`.
 
+## AI Models Used
+
+| Model | Purpose | VRAM | Speed | Status |
+|-------|---------|------|-------|--------|
+| **Whisper Large V3** | Speech-to-text transcription | ~4.5GB (fp16) | 2-4x faster than original | ✅ Integrated |
+| - Model: faster-whisper/large-v3 | 99+ languages, word timestamps | - | via faster-whisper | Phase 3 |
+| **PyAnnote** | Speaker diarization | ~2GB | Real-time | ✅ Integrated |
+| - Model: pyannote/speaker-diarization-community-1 | 2-5 speakers | - | - | Phase 3 |
+| **SeamlessM4T v2 Large** | Neural machine translation | ~6GB (fp16) | ~1-2s/segment | ✅ Integrated |
+| - Model: facebook/seamless-m4t-v2-large | 96 languages → English | 2.3B params | 3-beam search | Phase 4 |
+| **XTTS-v2** | Voice cloning + TTS | ~8GB | TBD | Planned |
+| - Model: coqui/XTTS-v2 | Emotion preservation | - | - | Phase 5 |
+| **Wav2Lip / LatentSync** | Lip synchronization | ~4GB | TBD | Planned |
+| - Model: TBD | Sync lips to English audio | - | - | Phase 6 |
+
+**Total VRAM (sequential loading)**: Peak ~8GB per stage (32GB available on RTX 5090)
+
 ## License
 
 *(To be added)*
@@ -300,5 +494,21 @@ These settings are automatically applied via `src/utils/gpu_validation.py`.
 
 ---
 
-**Status**: Phase 1 Complete - Environment & Foundation established
-**Next**: Phase 2 - Video Processing Pipeline
+## Development Progress
+
+| Phase | Plans | Status | Completed |
+|-------|-------|--------|-----------|
+| 1. Environment & Foundation | 3/3 | Complete | 2026-01-30 |
+| 2. Video Processing Pipeline | 2/2 | Complete | 2026-01-31 |
+| 3. Speech Recognition Pipeline | 3/3 | Complete | 2026-01-31 |
+| 4. Translation Pipeline | 4/4 | Complete | 2026-01-31 |
+| 5. Voice Cloning Pipeline | - | Planned | - |
+| 6. Lip Synchronization | - | Planned | - |
+| 7. Assembly & Export | - | Planned | - |
+| 8. Quality Review UI | - | Planned | - |
+| 9. Video Upload UI | - | Planned | - |
+| 10. Complete Pipeline Integration | - | Planned | - |
+| 11. Production Hardening | - | Planned | - |
+
+**Current Status**: Phase 4 Complete - Translation Pipeline ready
+**Next**: Phase 5 - Voice Cloning Pipeline
