@@ -50,6 +50,16 @@ TRANSLATION_CONFIDENCE_THRESHOLD = 0.7  # Flag segments below this
 TRANSLATION_DURATION_TOLERANCE = 0.1  # ±10% duration fit tolerance
 TRANSLATION_CHARS_PER_SECOND = 15  # English conversational speech rate
 
+# Multi-candidate generation (Phase 4, Plan 3)
+TRANSLATION_NUM_CANDIDATES = 3  # Default beam width for multi-candidate generation
+TRANSLATION_BATCH_SIZE = 8  # Process 8 segments at a time
+TRANSLATION_MAX_TOKENS_PER_SEGMENT = 512  # Max output length
+
+# Translation chunking for long videos (Phase 4, Plan 3)
+TRANSLATION_MAX_CHUNK_TOKENS = 1024  # SeamlessM4T safe upper limit
+TRANSLATION_OVERLAP_TOKENS = 128  # Context preservation overlap (128-256 recommended)
+TRANSLATION_APPROX_CHARS_PER_TOKEN = 4  # Rough estimate for token counting
+
 # Supported source languages (96 languages supported by SeamlessM4T v2)
 # Reference: https://huggingface.co/facebook/seamless-m4t-v2-large#supported-languages
 # Priority languages: jpn (Japanese), kor (Korean), cmn (Mandarin), spa (Spanish),
