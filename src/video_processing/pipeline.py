@@ -12,6 +12,7 @@ from .video_utils import validate_video_file, detect_container_format, get_video
 from .extractor import extract_streams
 from .merger import merge_audio_video, get_optimal_merge_config
 from ..storage.temp_manager import TempFileManager
+from ..config import settings
 
 
 @dataclass
@@ -75,8 +76,10 @@ def process_video(
 
     # 3. Determine output path
     if output_path is None:
-        # Use input name + "_processed" + same extension
-        output_path = input_path.parent / f"{input_path.stem}_processed{input_path.suffix}"
+        # Use project's outputs directory instead of input directory
+        # (Gradio uploads to temp directories that may not be persistent)
+        settings.OUTPUT_DATA_DIR.mkdir(parents=True, exist_ok=True)
+        output_path = settings.OUTPUT_DATA_DIR / f"{input_path.stem}_processed{input_path.suffix}"
     else:
         output_path = Path(output_path)
 
