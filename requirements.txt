@@ -14,5 +14,6 @@ python-dotenv
 # Video processing
 ffmpeg-python>=0.2.0
 
-# Speech recognition (Phase 3)
-faster-whisper>=1.0.0  # Optimized Whisper with 2-4x speedup and built-in VAD
+# Phase 3: Speech Recognition (ASR)
+faster-whisper>=1.0.0
+pyannote.audio>=3.1.0
