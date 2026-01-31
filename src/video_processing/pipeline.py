@@ -95,7 +95,9 @@ def process_video(
 
         # Extract streams
         progress_callback(0.2, "Extracting audio and video streams")
+        print(f"[DEBUG] Extracting from: {input_path}")
         extraction = extract_streams(input_path, temp.temp_dir)
+        print(f"[DEBUG] Extraction complete - Audio: {extraction.audio_path.exists()}, Video: {extraction.video_path.exists()}")
 
         # Phase 2: Audio is NOT processed - just passed through
         # Future phases will insert ML processing here:
@@ -109,6 +111,8 @@ def process_video(
 
         # Get optimal merge configuration for container formats
         merge_config = get_optimal_merge_config(input_format, output_format)
+        print(f"[DEBUG] Merge config: video={merge_config.video_codec}, audio={merge_config.audio_codec}")
+        print(f"[DEBUG] Merging: video={extraction.video_path}, audio={processed_audio} -> {output_path}")
 
         # Merge video and processed audio back together
         merge_audio_video(
@@ -117,8 +121,10 @@ def process_video(
             output_path,
             merge_config
         )
+        print(f"[DEBUG] Merge complete - Output exists: {output_path.exists()}")
 
     # Temp files automatically cleaned up here
+    print(f"[DEBUG] After temp cleanup - Output exists: {output_path.exists()}")
 
     # 6. Report progress: complete
     progress_callback(1.0, "Complete")
