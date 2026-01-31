@@ -3,7 +3,12 @@
   "depth": "comprehensive",
   "parallelization": true,
   "commit_docs": true,
-  "model_profile": "balanced",
+  "model_profile": "sonnet",
+  "models": {
+    "researcher": "sonnet",
+    "planner": "sonnet",
+    "checker": "sonnet"
+  },
   "workflow": {
     "research": true,
     "plan_check": true,
