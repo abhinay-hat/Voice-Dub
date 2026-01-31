@@ -83,7 +83,8 @@ def process_video(
     else:
         output_path = Path(output_path)
 
-    output_format = detect_container_format(output_path) if output_path.suffix else input_format
+    # Determine output format from file extension (not by probing, since file doesn't exist yet)
+    output_format = output_path.suffix.lstrip('.').lower() if output_path.suffix else input_format
 
     # 4. Report progress: starting
     progress_callback(0.05, "Starting processing")
