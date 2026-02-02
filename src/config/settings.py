@@ -65,6 +65,31 @@ TRANSLATION_APPROX_CHARS_PER_TOKEN = 4  # Rough estimate for token counting
 # Priority languages: jpn (Japanese), kor (Korean), cmn (Mandarin), spa (Spanish),
 # fra (French), deu (German), hin (Hindi), ara (Arabic)
 
+# TTS (Text-to-Speech) settings (Phase 5)
+TTS_SAMPLE_RATE = 24000  # XTTS native sample rate
+TTS_MODEL_ID = "tts_models/multilingual/multi-dataset/xtts_v2"
+TTS_REFERENCE_MIN_DURATION = 6.0  # Minimum reference sample duration (seconds)
+TTS_REFERENCE_MAX_DURATION = 10.0  # Maximum reference sample duration (seconds)
+TTS_CONCATENATION_GAP_THRESHOLD = 0.5  # Max gap between segments for concatenation (seconds)
+
+# XTTS synthesis parameters
+TTS_TEMPERATURE = 0.65  # Creativity control (0.1-1.0, lower = more consistent)
+TTS_LENGTH_PENALTY = 1.0  # >1.0 encourages longer output
+TTS_REPETITION_PENALTY = 2.0  # Reduces repeated phrases
+TTS_TOP_K = 50  # Decoder sampling parameter
+TTS_TOP_P = 0.85  # Nucleus sampling
+
+# Duration matching
+TTS_DURATION_TOLERANCE = 0.05  # ±5% duration match tolerance
+TTS_SPEED_MIN = 0.8  # Minimum speed adjustment
+TTS_SPEED_MAX = 1.2  # Maximum speed adjustment
+TTS_MAX_DURATION_RETRIES = 3  # Max retries for duration matching
+
+# Quality validation
+TTS_MIN_PESQ_SCORE = 2.5  # Minimum acceptable PESQ score
+TTS_PESQ_REVIEW_THRESHOLD = 3.0  # Flag for review if below this
+TTS_SHORT_TEXT_THRESHOLD = 3.0  # Minimum target duration (seconds) before short text handling
+
 # Logging
 LOG_LEVEL = "INFO"
 VERBOSE_MEMORY_LOGGING = True
