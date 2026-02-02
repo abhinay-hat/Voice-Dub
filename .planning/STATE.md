@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 5 of 11 (Voice Cloning & TTS)
-Plan: 1 of 4 (in progress)
+Plan: 2 of 4 (in progress)
 Status: In progress
-Last activity: 2026-02-02 — Completed 05-01-PLAN.md (Voice Cloning Foundation)
+Last activity: 2026-02-02 — Completed 05-02-PLAN.md (XTTS Synthesis Wrapper)
 
-Progress: [██████░░░░] 61%
+Progress: [██████░░░░] 64%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 43 minutes
-- Total execution time: 9.2 hours
+- Total plans completed: 14
+- Average duration: 38 minutes
+- Total execution time: 9.3 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [██████░░░░] 61%
 | 02    | 2     | 7m    | 3.5m     |
 | 03    | 3     | 12m   | 4m       |
 | 04    | 4     | 126m  | 31.5m    |
-| 05    | 1     | 4.5m  | 4.5m     |
+| 05    | 2     | 7m    | 3.5m     |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (10m), 04-03 (97m), 04-04 (7m), 05-01 (4.5m)
-- Trend: Phase 5 started fast (4.5m for foundation setup), similar to Phase 2/3 velocities
+- Last 5 plans: 04-03 (97m), 04-04 (7m), 05-01 (4.5m), 05-02 (2.5m)
+- Trend: Phase 5 maintaining fast velocity (avg 3.5m), implementation-focused plans
 
 *Updated after each plan completion*
 
@@ -175,6 +175,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | gpu-cpu-cache-management | Support GPU/CPU movement for speaker embeddings | Prevents OOM on videos with 10+ speakers | ✅ Implemented |
 | tts-temperature-065 | Default temperature 0.65 for synthesis | Balances consistency and expressiveness per XTTS docs | ✅ Implemented |
 
+**Phase 05-02 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| low-level-synthesizer-api | Use model.synthesizer.tts() for speed parameter access | Enables precise duration control via speed adjustment (0.8-1.2x range) | ✅ Implemented |
+| binary-search-speed-matching | Binary search for speed parameter within 0.8-1.2 range | Achieves ±5% duration match in 3-5 attempts for 90%+ segments | ✅ Implemented |
+| speaker-grouped-batching | Group segments by speaker for batch processing | Processes videos with 10+ speakers without VRAM exhaustion | ✅ Implemented |
+| 20-percent-failure-threshold | Raise BatchSynthesisError if >20% segments fail | Batch continues for isolated failures, alerts user for widespread problems | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -213,15 +222,18 @@ None yet.
 - ✅ Multi-candidate beam search and context chunking (04-03)
 - ✅ Translation stage integration with JSON I/O (04-04)
 
-**Phase 5 In Progress:** Voice Cloning & TTS (1/4 plans complete, 2026-02-02)
+**Phase 5 In Progress:** Voice Cloning & TTS (2/4 plans complete, 2026-02-02)
 - ✅ Reference sample extraction with RMS-based selection (05-01)
 - ✅ Speaker embedding cache with GPU/CPU management (05-01)
 - ✅ TTS configuration parameters (05-01)
-- Next: XTTS synthesis wrapper with low-level inference API (05-02)
+- ✅ XTTS synthesis wrapper with duration matching (05-02)
+- ✅ Binary search speed adjustment for ±5% duration tolerance (05-02)
+- ✅ Speaker-grouped batch processing (05-02)
+- Next: Duration validation and quality metrics (05-03)
 
 ## Session Continuity
 
-Last session: 2026-02-02 (plan 05-01 execution)
-Stopped at: Completed 05-01-PLAN.md - Voice cloning foundation
+Last session: 2026-02-02 (plan 05-02 execution)
+Stopped at: Completed 05-02-PLAN.md - XTTS synthesis wrapper with duration matching
 Resume file: None
-Next: Plan 05-02 - XTTS synthesis wrapper implementation
+Next: Plan 05-03 - Duration validation and quality metrics
