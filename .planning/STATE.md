@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 5 of 11 (Voice Cloning & TTS)
-Plan: 2 of 4 (in progress)
+Plan: 3 of 4 (in progress)
 Status: In progress
-Last activity: 2026-02-02 — Completed 05-02-PLAN.md (XTTS Synthesis Wrapper)
+Last activity: 2026-02-02 — Completed 05-03-PLAN.md (Audio Quality Validation)
 
-Progress: [██████░░░░] 64%
+Progress: [██████░░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
-- Average duration: 38 minutes
-- Total execution time: 9.3 hours
+- Total plans completed: 15
+- Average duration: 35 minutes
+- Total execution time: 9.4 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [██████░░░░] 64%
 | 02    | 2     | 7m    | 3.5m     |
 | 03    | 3     | 12m   | 4m       |
 | 04    | 4     | 126m  | 31.5m    |
-| 05    | 2     | 7m    | 3.5m     |
+| 05    | 3     | 11m   | 3.7m     |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (97m), 04-04 (7m), 05-01 (4.5m), 05-02 (2.5m)
-- Trend: Phase 5 maintaining fast velocity (avg 3.5m), implementation-focused plans
+- Last 5 plans: 04-04 (7m), 05-01 (4.5m), 05-02 (2.5m), 05-03 (4m)
+- Trend: Phase 5 maintaining fast velocity (avg 3.7m), implementation-focused plans
 
 *Updated after each plan completion*
 
@@ -184,6 +184,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | speaker-grouped-batching | Group segments by speaker for batch processing | Processes videos with 10+ speakers without VRAM exhaustion | ✅ Implemented |
 | 20-percent-failure-threshold | Raise BatchSynthesisError if >20% segments fail | Batch continues for isolated failures, alerts user for widespread problems | ✅ Implemented |
 
+**Phase 05-03 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| pesq-stoi-combination | Use PESQ + STOI for comprehensive quality assessment | Combines perceptual quality (PESQ) with intelligibility (STOI) | ✅ Implemented |
+| pitch-variance-emotion-proxy | Use pitch variance ratio as emotion preservation proxy | Detects flat/monotone (ratio < 0.6) or exaggerated (ratio > 1.5) output | ✅ Implemented |
+| duration-only-fallback | Support duration-only validation without reference | Enables quality checking when reference audio unavailable | ✅ Implemented |
+| pesq-quality-tiers | Four-tier PESQ classification | Maps MOS scores to human-readable categories for UI/logging | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -222,18 +231,20 @@ None yet.
 - ✅ Multi-candidate beam search and context chunking (04-03)
 - ✅ Translation stage integration with JSON I/O (04-04)
 
-**Phase 5 In Progress:** Voice Cloning & TTS (2/4 plans complete, 2026-02-02)
+**Phase 5 In Progress:** Voice Cloning & TTS (3/4 plans complete, 2026-02-02)
 - ✅ Reference sample extraction with RMS-based selection (05-01)
 - ✅ Speaker embedding cache with GPU/CPU management (05-01)
 - ✅ TTS configuration parameters (05-01)
 - ✅ XTTS synthesis wrapper with duration matching (05-02)
 - ✅ Binary search speed adjustment for ±5% duration tolerance (05-02)
 - ✅ Speaker-grouped batch processing (05-02)
-- Next: Duration validation and quality metrics (05-03)
+- ✅ Audio quality validation with PESQ and STOI (05-03)
+- ✅ Emotion preservation via pitch variance ratio (05-03)
+- Next: TTS stage integration (05-04)
 
 ## Session Continuity
 
-Last session: 2026-02-02 (plan 05-02 execution)
-Stopped at: Completed 05-02-PLAN.md - XTTS synthesis wrapper with duration matching
+Last session: 2026-02-02 (plan 05-03 execution)
+Stopped at: Completed 05-03-PLAN.md - Audio quality validation with PESQ
 Resume file: None
-Next: Plan 05-03 - Duration validation and quality metrics
+Next: Plan 05-04 - TTS stage integration
