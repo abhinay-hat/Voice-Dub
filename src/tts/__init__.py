@@ -7,9 +7,17 @@ from .reference_extractor import (
     select_best_segment,
     ReferenceExtractor
 )
+from .speaker_embeddings import (
+    SpeakerEmbeddingCache,
+    generate_speaker_embeddings,
+    generate_single_embedding
+)
 
 __all__ = [
     'extract_reference_samples',
     'select_best_segment',
-    'ReferenceExtractor'
+    'ReferenceExtractor',
+    'SpeakerEmbeddingCache',
+    'generate_speaker_embeddings',
+    'generate_single_embedding'
 ]
