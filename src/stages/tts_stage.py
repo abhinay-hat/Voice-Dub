@@ -162,13 +162,19 @@ def run_tts_stage(
         progress_callback(0.25, "Generating speaker embeddings...")
         print("\nGenerating speaker embeddings...")
 
-        embedding_cache = SpeakerEmbeddingCache(model_manager)
+        # Load XTTS model for embedding generation
+        from TTS.api import TTS
+        from src.tts.speaker_embeddings import generate_speaker_embeddings
+        from src.config.settings import TTS_MODEL_ID
 
-        for speaker_id, ref_path in reference_paths.items():
-            print(f"  Processing speaker: {speaker_id}")
-            embedding_cache.add_speaker(speaker_id, str(ref_path))
+        xtts_model = model_manager.load_model(
+            "xtts",
+            lambda: TTS(TTS_MODEL_ID, gpu=True)
+        )
 
-        print(f"✓ Generated embeddings for {len(reference_paths)} speakers")
+        embedding_cache = generate_speaker_embeddings(xtts_model, reference_paths)
+
+        print(f"Generated embeddings for {len(embedding_cache)} speakers")
 
         # Step 5: Synthesize all segments with duration matching
         progress_callback(0.35, "Initializing XTTS generator...")
