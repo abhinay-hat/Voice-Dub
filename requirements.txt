@@ -21,3 +21,7 @@ pyannote.audio>=3.1.0
 # Phase 4: Translation
 transformers>=4.30.0
 sentencepiece>=0.1.99
+
+# Phase 5: Voice Cloning & TTS
+librosa>=0.11.0
+soundfile>=0.12.0
