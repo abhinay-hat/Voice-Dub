@@ -16,6 +16,11 @@ from .xtts_generator import (
     XTTSGenerator,
     BatchSynthesisError
 )
+from .quality_validator import (
+    AudioQualityResult,
+    QualityValidator,
+    validate_audio_quality
+)
 
 __all__ = [
     'extract_reference_samples',
@@ -25,5 +30,8 @@ __all__ = [
     'generate_speaker_embeddings',
     'generate_single_embedding',
     'XTTSGenerator',
-    'BatchSynthesisError'
+    'BatchSynthesisError',
+    'AudioQualityResult',
+    'QualityValidator',
+    'validate_audio_quality'
 ]
