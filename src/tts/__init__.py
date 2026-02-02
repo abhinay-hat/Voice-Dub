@@ -1,6 +1,6 @@
 """
 TTS (Text-to-Speech) voice cloning components.
-Phase 5: Voice cloning reference extraction and speaker embeddings.
+Phase 5: Voice cloning reference extraction, speaker embeddings, and XTTS synthesis.
 """
 from .reference_extractor import (
     extract_reference_samples,
@@ -12,6 +12,10 @@ from .speaker_embeddings import (
     generate_speaker_embeddings,
     generate_single_embedding
 )
+from .xtts_generator import (
+    XTTSGenerator,
+    BatchSynthesisError
+)
 
 __all__ = [
     'extract_reference_samples',
@@ -19,5 +23,7 @@ __all__ = [
     'ReferenceExtractor',
     'SpeakerEmbeddingCache',
     'generate_speaker_embeddings',
-    'generate_single_embedding'
+    'generate_single_embedding',
+    'XTTSGenerator',
+    'BatchSynthesisError'
 ]
