@@ -105,10 +105,13 @@ Plans:
   3. Emotional tone (excited, calm, angry) is preserved in English audio
   4. Generated audio matches translated text timing (within 5% of target duration)
   5. Audio quality validation (MOS scoring) rejects low-quality samples before proceeding
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 05-01-PLAN.md — Reference sample extraction and speaker embedding generation
+- [ ] 05-02-PLAN.md — XTTS-v2 synthesis wrapper with duration matching
+- [ ] 05-03-PLAN.md — Audio quality validation with PESQ scoring
+- [ ] 05-04-PLAN.md — TTS stage orchestration and integration testing
 
 ### Phase 6: Audio-Video Assembly
 **Goal**: System merges dubbed audio with video maintaining frame-perfect synchronization over full 20-minute duration, preventing gradual drift.
@@ -211,7 +214,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 2. Video Processing Pipeline | 2/3 | In Progress | - |
 | 3. Speech Recognition | 3/3 | Complete | 2026-01-31 |
 | 4. Translation Pipeline | 4/4 | Complete | 2026-01-31 |
-| 5. Voice Cloning & TTS | 0/TBD | Not started | - |
+| 5. Voice Cloning & TTS | 0/4 | Not started | - |
 | 6. Audio-Video Assembly | 0/TBD | Not started | - |
 | 7. Lip Synchronization | 0/TBD | Not started | - |
 | 8. Quality Controls | 0/TBD | Not started | - |
@@ -221,4 +224,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 ---
 *Created: 2026-01-31*
-*Last updated: 2026-01-31 (Phase 4 execution complete)*
+*Last updated: 2026-02-02 (Phase 5 planning complete)*
