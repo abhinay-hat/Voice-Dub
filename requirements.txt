@@ -25,3 +25,7 @@ sentencepiece>=0.1.99
 # Phase 5: Voice Cloning & TTS
 librosa>=0.11.0
 soundfile>=0.12.0
+
+# Audio quality validation (Phase 5 - TTS)
+pesq>=0.0.4
+pystoi>=0.3.3
