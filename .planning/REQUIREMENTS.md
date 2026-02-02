@@ -29,11 +29,11 @@
 
 ### Voice Cloning & TTS
 
-- [ ] **TTS-01**: System extracts 6-10 second reference audio sample per speaker
-- [ ] **TTS-02**: System clones each speaker's voice from reference sample
-- [ ] **TTS-03**: System preserves original speaker's emotional tone and style
-- [ ] **TTS-04**: System generates English audio matching translated text
-- [ ] **TTS-05**: System validates audio quality before proceeding (MOS scoring)
+- [x] **TTS-01**: System extracts 6-10 second reference audio sample per speaker
+- [x] **TTS-02**: System clones each speaker's voice from reference sample
+- [x] **TTS-03**: System preserves original speaker's emotional tone and style
+- [x] **TTS-04**: System generates English audio matching translated text
+- [x] **TTS-05**: System validates audio quality before proceeding (MOS scoring)
 
 ### Lip Synchronization
 
