@@ -368,9 +368,116 @@ python tests/test_translation_stage.py
 
 ---
 
+### Phase 5: Voice Cloning & TTS (Complete)
+**Status**: ✅ Complete (2026-02-02)
+
+**Stage module:** `src/stages/tts_stage.py`
+
+**Capabilities:**
+- Voice cloning for each speaker using XTTS-v2 with emotion preservation
+- Reference sample extraction from original audio (6-10 second segments)
+- Speaker embedding generation and caching for VRAM management
+- Duration-matched synthesis with binary search speed adjustment (±5% tolerance)
+- Audio quality validation using PESQ and STOI metrics
+- Emotion preservation detection via pitch variance ratio analysis
+- Batch processing with speaker grouping for efficiency
+- Quality-based segment flagging for manual review
+
+**Overview:**
+Phase 5 generates English audio from translated text using XTTS-v2 voice cloning. Each speaker's voice is cloned from a 6-10 second reference sample extracted from the original video, preserving voice characteristics and emotional tone.
+
+**Components:**
+- **Reference Extractor**: Selects cleanest audio samples per speaker using RMS energy proxy
+- **Speaker Embeddings**: XTTS conditioning latents for voice cloning (cached for reuse)
+- **XTTS Generator**: Synthesis with duration matching via speed parameter (0.8-1.2x)
+- **Quality Validator**: PESQ-based quality assessment with emotion preservation check
+
+**Emotion Preservation:**
+XTTS-v2 preserves emotional characteristics through speaker conditioning latents extracted from reference audio. The quality validator checks emotion preservation by comparing pitch variance between generated and reference audio:
+
+- **Pitch variance ratio 0.6-1.5**: Emotion preserved (acceptable range)
+- **Pitch variance ratio <0.6 or >1.5**: Emotion lost/exaggerated - flagged for review
+
+**Usage:**
+```python
+from src.stages.tts_stage import run_tts_stage
+
+# Generate English audio with cloned voices
+result = run_tts_stage(
+    translation_json_path="data/temp/video_translation.json",
+    audio_path="data/temp/video_audio.wav",
+    output_dir="data/temp/tts_output",
+    progress_callback=lambda p, s: print(f"[{p*100:.0f}%] {s}")
+)
+
+# Check results
+print(f"Synthesized {result.successful_segments}/{result.total_segments} segments")
+print(f"Flagged for review: {result.flagged_count}")
+print(f"Emotion issues: {result.emotion_flagged_count}")
+
+# Access synthesized audio files
+for segment in result.segments:
+    print(f"[{segment.speaker}] {segment.audio_path}")
+    print(f"  Duration: {segment.actual_duration:.2f}s (target: {segment.original_duration:.2f}s)")
+    print(f"  Quality: {'PASS' if segment.quality_passed else 'FAIL'}")
+    print(f"  Emotion: {'preserved' if segment.emotion_preserved else 'flagged'}")
+```
+
+**Pipeline flow:**
+1. Load translation JSON (translated text with timing)
+2. Create output directory
+3. Extract reference samples per speaker (6-10s, RMS-based selection)
+4. Generate speaker embeddings (XTTS conditioning latents)
+5. Synthesize all segments with duration matching
+   - Group by speaker for efficiency
+   - Binary search speed adjustment (0.8-1.2x range)
+   - Save individual WAV files per segment
+6. Validate audio quality with emotion preservation check
+   - PESQ score (perceptual quality)
+   - STOI score (intelligibility)
+   - Pitch variance ratio (emotion preservation)
+7. Build result structure with quality flags
+8. Export result JSON (segment manifest)
+9. Cleanup model and CUDA cache
+
+**Configuration (in `src/config/settings.py`):**
+```python
+TTS_MODEL_ID = "tts_models/multilingual/multi-dataset/xtts_v2"
+TTS_SAMPLE_RATE = 24000  # XTTS native sample rate
+TTS_TEMPERATURE = 0.65  # Creativity control (default 0.65)
+TTS_DURATION_TOLERANCE = 0.05  # ±5% timing accuracy
+TTS_MIN_PESQ_SCORE = 2.5  # Quality threshold (1.0-5.0 scale)
+TTS_PESQ_REVIEW_THRESHOLD = 3.0  # Flag for review if below
+TTS_REFERENCE_MIN_DURATION = 6.0  # Minimum reference sample
+TTS_REFERENCE_MAX_DURATION = 10.0  # Maximum reference sample
+TTS_SPEED_MIN = 0.8  # Minimum speed adjustment
+TTS_SPEED_MAX = 1.2  # Maximum speed adjustment
+```
+
+**Testing:**
+```bash
+python tests/test_tts_stage.py
+# 13 integration tests covering imports, logic, quality validation, emotion preservation
+```
+
+**Key Decisions:**
+- **XTTS-v2 for voice cloning**: Best open-source model with emotion preservation
+- **RMS energy for reference selection**: Fast proxy for audio quality
+- **Binary search for duration matching**: Achieves ±5% match in 3-5 attempts
+- **PESQ + STOI for quality**: Comprehensive assessment (perceptual + intelligibility)
+- **Pitch variance for emotion**: Fast proxy for emotional expression preservation
+- **Speaker-grouped batching**: Prevents VRAM exhaustion on videos with 10+ speakers
+
+**Requirements:**
+- XTTS-v2 requires ~2GB VRAM for inference
+- Reference samples need 6-10 seconds of clean audio per speaker
+- **Non-Commercial License**: XTTS-v2 is licensed under CPML for non-commercial use only
+
+---
+
 ## Usage
 
-*(Full pipeline integration to be added in Phase 5+)*
+*(Full pipeline integration to be added in Phase 6+)*
 
 ## Development
 
@@ -477,8 +584,8 @@ These settings are automatically applied via `src/utils/gpu_validation.py`.
 | - Model: pyannote/speaker-diarization-community-1 | 2-5 speakers | - | - | Phase 3 |
 | **SeamlessM4T v2 Large** | Neural machine translation | ~6GB (fp16) | ~1-2s/segment | ✅ Integrated |
 | - Model: facebook/seamless-m4t-v2-large | 96 languages → English | 2.3B params | 3-beam search | Phase 4 |
-| **XTTS-v2** | Voice cloning + TTS | ~8GB | TBD | Planned |
-| - Model: coqui/XTTS-v2 | Emotion preservation | - | - | Phase 5 |
+| **XTTS-v2** | Voice cloning + TTS | ~2GB | ~0.5-1s/segment | ✅ Integrated |
+| - Model: coqui/XTTS-v2 | Emotion preservation, duration matching | Non-commercial | Speed adjust 0.8-1.2x | Phase 5 |
 | **Wav2Lip / LatentSync** | Lip synchronization | ~4GB | TBD | Planned |
 | - Model: TBD | Sync lips to English audio | - | - | Phase 6 |
 
@@ -502,7 +609,7 @@ These settings are automatically applied via `src/utils/gpu_validation.py`.
 | 2. Video Processing Pipeline | 2/2 | Complete | 2026-01-31 |
 | 3. Speech Recognition Pipeline | 3/3 | Complete | 2026-01-31 |
 | 4. Translation Pipeline | 4/4 | Complete | 2026-01-31 |
-| 5. Voice Cloning Pipeline | - | Planned | - |
+| 5. Voice Cloning & TTS | 4/4 | Complete | 2026-02-02 |
 | 6. Lip Synchronization | - | Planned | - |
 | 7. Assembly & Export | - | Planned | - |
 | 8. Quality Review UI | - | Planned | - |
@@ -510,5 +617,5 @@ These settings are automatically applied via `src/utils/gpu_validation.py`.
 | 10. Complete Pipeline Integration | - | Planned | - |
 | 11. Production Hardening | - | Planned | - |
 
-**Current Status**: Phase 4 Complete - Translation Pipeline ready
-**Next**: Phase 5 - Voice Cloning Pipeline
+**Current Status**: Phase 5 Complete - Voice Cloning & TTS with emotion preservation ready
+**Next**: Phase 6 - Lip Synchronization
