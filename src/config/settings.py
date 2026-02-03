@@ -90,6 +90,12 @@ TTS_MIN_PESQ_SCORE = 2.5  # Minimum acceptable PESQ score
 TTS_PESQ_REVIEW_THRESHOLD = 3.0  # Flag for review if below this
 TTS_SHORT_TEXT_THRESHOLD = 3.0  # Minimum target duration (seconds) before short text handling
 
+# Assembly settings (Phase 6)
+ASSEMBLY_TARGET_SAMPLE_RATE = 48000  # Video production standard (48kHz)
+ASSEMBLY_DRIFT_TOLERANCE_MS = 45.0  # ATSC recommendation: max 45ms audio-video offset
+ASSEMBLY_CHECKPOINT_INTERVAL = 300.0  # 5-minute validation intervals (seconds)
+ASSEMBLY_RESAMPLING_QUALITY = 'kaiser_best'  # High-quality sinc interpolation
+
 # Logging
 LOG_LEVEL = "INFO"
 VERBOSE_MEMORY_LOGGING = True
