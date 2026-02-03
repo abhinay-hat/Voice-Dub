@@ -123,10 +123,12 @@ Plans:
   3. High-precision timestamps (float64) maintain accuracy through pipeline
   4. Consistent sample rate (48kHz) enforced throughout audio processing
   5. FFmpeg merge completes with explicit sync flags (-async 1) preventing drift
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 06-01-PLAN.md — Core assembly infrastructure (timestamp validator, audio normalizer, concatenator)
+- [ ] 06-02-PLAN.md — Drift detection and enhanced video merger with sync flags
+- [ ] 06-03-PLAN.md — Assembly stage orchestration and integration testing
 
 ### Phase 7: Lip Synchronization
 **Goal**: System synchronizes lip movements to English audio with frame-perfect accuracy while maintaining facial stability, completing core dubbing pipeline.
@@ -215,7 +217,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 3. Speech Recognition | 3/3 | Complete | 2026-01-31 |
 | 4. Translation Pipeline | 4/4 | Complete | 2026-01-31 |
 | 5. Voice Cloning & TTS | 4/4 | Complete | 2026-02-02 |
-| 6. Audio-Video Assembly | 0/TBD | Not started | - |
+| 6. Audio-Video Assembly | 0/3 | Not started | - |
 | 7. Lip Synchronization | 0/TBD | Not started | - |
 | 8. Quality Controls | 0/TBD | Not started | - |
 | 9. Performance Optimization | 0/TBD | Not started | - |
@@ -224,4 +226,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 
 ---
 *Created: 2026-01-31*
-*Last updated: 2026-02-02 (Phase 5 execution complete)*
+*Last updated: 2026-02-03 (Phase 6 planning complete)*
