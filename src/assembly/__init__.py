@@ -7,7 +7,11 @@ and segment concatenation to enable precise audio-video alignment over long vide
 """
 
 from . import timestamp_validator
+from . import audio_normalizer
+from . import audio_concatenator
 
 __all__ = [
     'timestamp_validator',
+    'audio_normalizer',
+    'audio_concatenator',
 ]
