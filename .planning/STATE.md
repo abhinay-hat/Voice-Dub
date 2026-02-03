@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 6 of 11 (Audio-Video Assembly)
-Plan: 1 of 3 (in progress)
+Plan: 2 of 3 (in progress)
 Status: In progress
-Last activity: 2026-02-03 — Completed 06-01-PLAN.md (Assembly Infrastructure)
+Last activity: 2026-02-03 — Completed 06-02-PLAN.md (Drift Detection & Video Merging)
 
-Progress: [███████░░░] 77%
+Progress: [████████░░] 81%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
-- Average duration: 29 minutes
-- Total execution time: 9.5 hours
+- Total plans completed: 18
+- Average duration: 28 minutes
+- Total execution time: 9.6 hours
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: [███████░░░] 77%
 | 03    | 3     | 12m   | 4m       |
 | 04    | 4     | 126m  | 31.5m    |
 | 05    | 4     | 19m   | 4.8m     |
-| 06    | 1     | 3m    | 3m       |
+| 06    | 2     | 9m    | 4.5m     |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (2.5m), 05-03 (4m), 05-04 (7.5m), 06-01 (3m)
-- Trend: Fast velocity continues in Phase 6 (3m for infrastructure setup)
+- Last 5 plans: 05-03 (4m), 05-04 (7.5m), 06-01 (3m), 06-02 (6m)
+- Trend: Phase 6 maintaining fast velocity (avg 4.5m)
 
 *Updated after each plan completion*
 
@@ -214,6 +214,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | 5min-checkpoints | Validate sync at 5-minute intervals | Early drift detection for long videos | ✅ Implemented |
 | frame-boundary-alignment | Align timestamps to video frame boundaries | Prevents sub-frame jitter accumulation | ✅ Implemented |
 
+**Phase 06-02 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| dict-async-workaround | Use `**{'async': 1}` for aresample parameter | Enables FFmpeg async parameter without Python syntax error | ✅ Implemented |
+| checkpoint-actual-duration | Calculate actual duration by summing segments up to checkpoint | Accurate drift measurement at any checkpoint timestamp | ✅ Implemented |
+| format-specific-codecs | Provide different codec configs per output format | Ensures compatibility and optimal quality per format | ✅ Implemented |
+| compatibility-validation | Validate inputs with ffprobe before merge | User-friendly error messages for missing streams | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -265,15 +274,18 @@ None yet.
 - ✅ Comprehensive integration tests (13 tests) (05-04)
 - ✅ Phase 5 documentation in README (05-04)
 
-**Phase 6 In Progress:** Audio-Video Assembly (1/3 plans complete, 2026-02-03)
+**Phase 6 In Progress:** Audio-Video Assembly (2/3 plans complete, 2026-02-03)
 - ✅ Assembly infrastructure with timestamp validation (06-01)
 - ✅ Float64 precision for drift prevention (06-01)
 - ✅ 48kHz sample rate normalization with kaiser_best (06-01)
 - ✅ Audio concatenation with gap padding (06-01)
+- ✅ Checkpoint-based drift detection at 5-minute intervals (06-02)
+- ✅ FFmpeg merge with aresample async=1 for drift correction (06-02)
+- ✅ Complete assembly module API with 15 public exports (06-02)
 
 ## Session Continuity
 
-Last session: 2026-02-03 (plan 06-01 execution)
-Stopped at: Completed 06-01-PLAN.md - Assembly infrastructure ready
+Last session: 2026-02-03 (plan 06-02 execution)
+Stopped at: Completed 06-02-PLAN.md - Drift detection and video merging ready
 Resume file: None
-Next: Plan 06-02 - Drift Detection & Validation
+Next: Plan 06-03 - Assembly Stage Orchestration
