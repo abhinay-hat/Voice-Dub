@@ -475,6 +475,102 @@ python tests/test_tts_stage.py
 
 ---
 
+### Phase 6: Audio-Video Assembly (Complete)
+**Status**: ✅ Complete (2026-02-03)
+
+**Stage module:** `src/stages/assembly_stage.py`
+
+**Capabilities:**
+- Frame-perfect audio-video synchronization for dubbed videos
+- Float64 timestamp precision prevents drift accumulation over 20+ minutes
+- Sample rate normalization to 48kHz (video production standard)
+- Audio segment concatenation with gap handling
+- Drift detection at 5-minute intervals (ATSC 45ms tolerance)
+- FFmpeg merge with clock drift correction (`async=1`)
+- Automatic cleanup of temporary files
+
+**Overview:**
+Phase 6 assembles synthesized audio segments from Phase 5 into the final dubbed video. The assembly pipeline ensures frame-perfect synchronization through float64 timestamp precision, 48kHz audio normalization, checkpoint-based drift validation, and FFmpeg's async resampling for clock drift correction.
+
+**Components:**
+- **Timestamp Validator**: Float64 precision validation prevents drift accumulation
+- **Audio Normalizer**: Sample rate normalization to 48kHz with kaiser_best resampling
+- **Audio Concatenator**: Segment concatenation with gap handling (silence padding)
+- **Drift Detector**: Sync validation at 5-minute intervals (ATSC 45ms tolerance)
+- **Video Merger**: FFmpeg merge with `-af aresample=async=1` for clock drift correction
+
+**Sync Validation:**
+The drift detector validates audio-video sync at regular intervals to catch progressive drift before it becomes noticeable:
+
+- **Checkpoints at 5-minute intervals** (300s)
+- **ATSC tolerance: 45ms maximum drift** (broadcast standard)
+- **Drift > 45ms**: Warning logged, user decides whether to accept
+- **Float64 timestamps**: Prevents precision loss over 20+ minute videos
+
+**Usage:**
+```python
+from src.stages.assembly_stage import run_assembly_stage
+
+# Assemble TTS segments into final dubbed video
+result = run_assembly_stage(
+    video_path=Path("input_video.mp4"),
+    tts_result_path=Path("tts_result.json"),
+    output_path=Path("dubbed_video.mp4"),
+    video_fps=30.0,
+    progress_callback=lambda p, m: print(f"{p*100:.0f}%: {m}")
+)
+
+# Check sync quality
+print(f"Output: {result.output_path}")
+print(f"Drift detected: {result.drift_detected}")
+print(f"Max drift: {result.max_drift_ms:.2f}ms")
+
+# Review checkpoints
+for cp in result.sync_checkpoints:
+    status = "✓" if cp.within_tolerance else "✗"
+    print(f"  {status} {cp.timestamp/60:.0f}min: {cp.drift_ms:+.2f}ms")
+```
+
+**Pipeline Flow:**
+1. (0.05) Load TTS result JSON
+2. (0.10) Create TimedSegment objects from TTS output
+3. (0.15) Validate timestamp precision (float64)
+4. (0.25) Normalize all audio segments to 48kHz
+5. (0.45) Concatenate normalized segments (with gap padding)
+6. (0.60) Validate sync at 5-minute intervals
+7. (0.80) Merge with FFmpeg sync flags (`async=1`)
+8. (0.95) Export assembly result JSON
+9. (1.0) Cleanup temporary files
+
+**Configuration (in `src/config/settings.py`):**
+```python
+ASSEMBLY_TARGET_SAMPLE_RATE = 48000   # 48kHz video standard
+ASSEMBLY_DRIFT_TOLERANCE_MS = 45.0    # ATSC recommendation
+ASSEMBLY_CHECKPOINT_INTERVAL = 300.0  # 5-minute intervals (seconds)
+ASSEMBLY_RESAMPLING_QUALITY = 'kaiser_best'  # High-quality sinc interpolation
+```
+
+**Testing:**
+```bash
+python tests/test_assembly_stage.py
+# 12 integration tests covering all assembly components
+```
+
+**Key Decisions:**
+- **Float64 timestamps**: Prevents precision loss over 20+ minute videos (float32 accumulates ~10ms drift per 10 minutes)
+- **48kHz target rate**: Video production standard, prevents sample rate drift
+- **Kaiser_best resampling**: Highest quality sinc interpolation per librosa research
+- **45ms drift tolerance**: ATSC standard for acceptable A/V offset (broadcast guideline)
+- **5-minute checkpoints**: Early drift detection for long videos
+- **Async resampling**: FFmpeg's `aresample=async=1` corrects clock drift during merge
+
+**Requirements:**
+- FFmpeg with aresample filter support
+- No GPU required (FFmpeg-based, no ML models)
+- Sample rate normalization uses librosa with kaiser_best quality
+
+---
+
 ## Usage
 
 *(Full pipeline integration to be added in Phase 6+)*
@@ -610,12 +706,12 @@ These settings are automatically applied via `src/utils/gpu_validation.py`.
 | 3. Speech Recognition Pipeline | 3/3 | Complete | 2026-01-31 |
 | 4. Translation Pipeline | 4/4 | Complete | 2026-01-31 |
 | 5. Voice Cloning & TTS | 4/4 | Complete | 2026-02-02 |
-| 6. Lip Synchronization | - | Planned | - |
-| 7. Assembly & Export | - | Planned | - |
+| 6. Audio-Video Assembly | 3/3 | Complete | 2026-02-03 |
+| 7. Lip Synchronization | - | Planned | - |
 | 8. Quality Review UI | - | Planned | - |
 | 9. Video Upload UI | - | Planned | - |
 | 10. Complete Pipeline Integration | - | Planned | - |
 | 11. Production Hardening | - | Planned | - |
 
-**Current Status**: Phase 5 Complete - Voice Cloning & TTS with emotion preservation ready
-**Next**: Phase 6 - Lip Synchronization
+**Current Status**: Phase 6 Complete - Audio-Video Assembly with drift-free synchronization ready
+**Next**: Phase 7 - Lip Synchronization
