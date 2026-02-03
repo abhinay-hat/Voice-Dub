@@ -5,22 +5,22 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Watch any video content in English while preserving the original speaker's voice characteristics and emotional expression, without relying on cloud services or paying API fees.
-**Current focus:** Phase 3: Speech Recognition
+**Current focus:** Phase 6: Audio-Video Assembly
 
 ## Current Position
 
-Phase: 5 of 11 (Voice Cloning & TTS)
-Plan: 4 of 4 (complete)
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 05-04-PLAN.md (TTS Stage Integration)
+Phase: 6 of 11 (Audio-Video Assembly)
+Plan: 1 of 3 (in progress)
+Status: In progress
+Last activity: 2026-02-03 — Completed 06-01-PLAN.md (Assembly Infrastructure)
 
-Progress: [██████░░░░] 73%
+Progress: [███████░░░] 77%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
-- Average duration: 31 minutes
+- Total plans completed: 17
+- Average duration: 29 minutes
 - Total execution time: 9.5 hours
 
 **By Phase:**
@@ -32,10 +32,11 @@ Progress: [██████░░░░] 73%
 | 03    | 3     | 12m   | 4m       |
 | 04    | 4     | 126m  | 31.5m    |
 | 05    | 4     | 19m   | 4.8m     |
+| 06    | 1     | 3m    | 3m       |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (4.5m), 05-02 (2.5m), 05-03 (4m), 05-04 (7.5m)
-- Trend: Phase 5 complete with fast velocity (avg 4.8m), all implementation plans
+- Last 5 plans: 05-02 (2.5m), 05-03 (4m), 05-04 (7.5m), 06-01 (3m)
+- Trend: Fast velocity continues in Phase 6 (3m for infrastructure setup)
 
 *Updated after each plan completion*
 
@@ -202,6 +203,17 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | emotion-preservation-tracking | Track emotion preservation separately from quality_passed | Enables UI to show emotion flags without failing stage | ✅ Implemented |
 | generate-speaker-embeddings-helper | Use generate_speaker_embeddings() helper function | Cleaner API, handles XTTS model loading correctly | ✅ Implemented |
 
+**Phase 06-01 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| float64-timestamps | Use float64 precision for all timestamps | Prevents precision loss over 20+ minute videos | ✅ Implemented |
+| 48khz-target-rate | Normalize all audio to 48kHz | DVD/broadcast standard, prevents sample rate drift | ✅ Implemented |
+| kaiser-best-resampling | Use librosa kaiser_best for resampling | Highest quality sinc interpolation per research | ✅ Implemented |
+| 45ms-drift-tolerance | Set 45ms as drift tolerance threshold | ATSC standard for acceptable A/V offset | ✅ Implemented |
+| 5min-checkpoints | Validate sync at 5-minute intervals | Early drift detection for long videos | ✅ Implemented |
+| frame-boundary-alignment | Align timestamps to video frame boundaries | Prevents sub-frame jitter accumulation | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -253,9 +265,15 @@ None yet.
 - ✅ Comprehensive integration tests (13 tests) (05-04)
 - ✅ Phase 5 documentation in README (05-04)
 
+**Phase 6 In Progress:** Audio-Video Assembly (1/3 plans complete, 2026-02-03)
+- ✅ Assembly infrastructure with timestamp validation (06-01)
+- ✅ Float64 precision for drift prevention (06-01)
+- ✅ 48kHz sample rate normalization with kaiser_best (06-01)
+- ✅ Audio concatenation with gap padding (06-01)
+
 ## Session Continuity
 
-Last session: 2026-02-02 (plan 05-04 execution)
-Stopped at: Completed 05-04-PLAN.md - TTS stage integration complete
+Last session: 2026-02-03 (plan 06-01 execution)
+Stopped at: Completed 06-01-PLAN.md - Assembly infrastructure ready
 Resume file: None
-Next: Phase 6 - Lip Synchronization
+Next: Plan 06-02 - Drift Detection & Validation
