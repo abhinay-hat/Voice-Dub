@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Watch any video content in English while preserving the original speaker's voice characteristics and emotional expression, without relying on cloud services or paying API fees.
-**Current focus:** Phase 6: Audio-Video Assembly
+**Current focus:** Phase 2: Video Processing Pipeline (revisiting for 02-03 checkpoint)
 
 ## Current Position
 
-Phase: 6 of 11 (Audio-Video Assembly)
-Plan: 3 of 3 (complete)
-Status: Phase complete
-Last activity: 2026-02-03 — Completed 06-03-PLAN.md (Assembly Stage Orchestration)
+Phase: 2 of 11 (Video Processing Pipeline)
+Plan: 3 of 3 (at checkpoint)
+Status: Paused at human-verify checkpoint — awaiting user to test web interface
+Last activity: 2026-02-19 — Completed 02-03 Task 1 (Gradio interface), waiting at Task 2 checkpoint
 
 Progress: [█████████░] 86%
 
@@ -288,7 +288,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-03 (plan 06-03 execution)
-Stopped at: Completed 06-03-PLAN.md - Phase 6 complete
+Last session: 2026-02-19 (plan 02-03 execution)
+Stopped at: Checkpoint in 02-03-PLAN.md — Task 2 (human-verify end-to-end pipeline)
 Resume file: None
-Next: Phase 7 - Lip Synchronization
+Next: After user approves checkpoint, Phase 2 complete; continue to Phase 7 - Lip Synchronization
