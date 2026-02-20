@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Watch any video content in English while preserving the original speaker's voice characteristics and emotional expression, without relying on cloud services or paying API fees.
-**Current focus:** Phase 2: Video Processing Pipeline (revisiting for 02-03 checkpoint)
+**Current focus:** Phase 7: Lip Synchronization (executing)
 
 ## Current Position
 
-Phase: 2 of 11 (Video Processing Pipeline)
-Plan: 3 of 3 (at checkpoint)
-Status: Paused at human-verify checkpoint — awaiting user to test web interface
-Last activity: 2026-02-19 — Completed 02-03 Task 1 (Gradio interface), waiting at Task 2 checkpoint
+Phase: 7 of 11 (Lip Synchronization)
+Plan: 2 of 4 (07-02 complete)
+Status: In progress — Plans 07-01 and 07-02 complete (wave 1 done); 07-03 and 07-04 pending
+Last activity: 2026-02-20 — Completed 07-02: Wav2Lip runner and video chunker
 
 Progress: [█████████░] 86%
 
@@ -223,6 +223,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | format-specific-codecs | Provide different codec configs per output format | Ensures compatibility and optimal quality per format | ✅ Implemented |
 | compatibility-validation | Validate inputs with ffprobe before merge | User-friendly error messages for missing streams | ✅ Implemented |
 
+**Phase 07-02 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| wav2lip-gan-pth-guard | ValueError if s3fd.pth passed as checkpoint_path | Prevents KeyError: state_dict crash from wrong checkpoint file | ✅ Implemented |
+| accurate-seek-reencode | Use -ss -t after -i for chunk splitting (re-encode) | Prevents GOP misalignment that inflates concat duration (12s→17.3s with stream copy) | ✅ Implemented |
+| 5min-chunk-default | 300s default chunk duration for both LatentSync and Wav2Lip | Prevents face detection VRAM spikes on long videos | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -288,7 +296,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-19 (plan 02-03 execution)
-Stopped at: Checkpoint in 02-03-PLAN.md — Task 2 (human-verify end-to-end pipeline)
+Last session: 2026-02-20
+Stopped at: Completed 07-02-PLAN.md — Wav2Lip runner and video chunker
 Resume file: None
-Next: After user approves checkpoint, Phase 2 complete; continue to Phase 7 - Lip Synchronization
+Next: Execute 07-03 (stage orchestration, depends on 07-01 and 07-02)
