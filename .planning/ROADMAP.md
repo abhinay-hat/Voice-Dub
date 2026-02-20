@@ -158,10 +158,13 @@ Plans:
   3. Progress display shows real-time status (Transcribing 45% / Translating / Cloning voice / Syncing lips)
   4. System validates each pipeline stage (ASR confidence, translation duration, audio quality, sync accuracy) before proceeding
   5. User can cancel processing at any stage and return to editing
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 08-01-PLAN.md — Gradio UI scaffold: four-step workflow layout (Upload, Review, Processing, Output)
+- [ ] 08-02-PLAN.md — Stage validators (TDD) and clip preview extractor
+- [ ] 08-03-PLAN.md — Pipeline runner: generator functions with progress, validation, and cancellation
+- [ ] 08-04-PLAN.md — Event handler wiring, integration tests, and human UI verification
 
 ### Phase 9: Performance Optimization
 **Goal**: System processes 20-minute videos in 10-20 minutes leveraging full RTX 5090 capabilities, with memory management preventing OOM errors.
@@ -222,11 +225,11 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 5. Voice Cloning & TTS | 4/4 | Complete | 2026-02-02 |
 | 6. Audio-Video Assembly | 3/3 | Complete | 2026-02-03 |
 | 7. Lip Synchronization | 4/4 | Complete | 2026-02-21 |
-| 8. Quality Controls | 0/TBD | Not started | - |
+| 8. Quality Controls | 0/4 | Not started | - |
 | 9. Performance Optimization | 0/TBD | Not started | - |
 | 10. Batch Processing | 0/TBD | Not started | - |
 | 11. User Experience Polish | 0/TBD | Not started | - |
 
 ---
 *Created: 2026-01-31*
-*Last updated: 2026-02-21 (Phase 7 execution complete)*
+*Last updated: 2026-02-21 (Phase 8 planned)*
