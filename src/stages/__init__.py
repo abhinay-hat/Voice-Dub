@@ -8,9 +8,19 @@ from .assembly_stage import (
     AssemblyResult,
     AssemblyStageFailed,
 )
+from .lip_sync_stage import (
+    run_lip_sync_stage,
+    LipSyncResult,
+    LipSyncStageFailed,
+)
 
 __all__ = [
+    # Assembly stage
     "run_assembly_stage",
     "AssemblyResult",
     "AssemblyStageFailed",
+    # Lip sync stage
+    "run_lip_sync_stage",
+    "LipSyncResult",
+    "LipSyncStageFailed",
 ]
