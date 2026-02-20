@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 7 of 11 (Lip Synchronization)
-Plan: 2 of 4 (07-01 and 07-02 complete)
-Status: In progress — Plans 07-01 and 07-02 complete (wave 1 done); 07-03 and 07-04 pending
-Last activity: 2026-02-20 — Completed 07-01: LatentSync conda env, checkpoints, audio_prep, and latentsync_runner modules
+Plan: 3 of 4 (07-01, 07-02, and 07-03 complete)
+Status: In progress — Wave 1 and 07-03 complete; 07-04 (integration tests) pending
+Last activity: 2026-02-20 — Completed 07-03: lip_sync_stage.py orchestration, validator.py
 
-Progress: [█████████░] 86%
+Progress: [█████████░] 88%
 
 ## Performance Metrics
 
@@ -240,6 +240,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | accurate-seek-reencode | Use -ss -t after -i for chunk splitting (re-encode) | Prevents GOP misalignment that inflates concat duration (12s→17.3s with stream copy) | ✅ Implemented |
 | 5min-chunk-default | 300s default chunk duration for both LatentSync and Wav2Lip | Prevents face detection VRAM spikes on long videos | ✅ Implemented |
 
+**Phase 07-03 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| advisory-sync-validation | validate_lip_sync_output() exceptions caught, stage never fails | Prevents ffprobe signalstats issues from blocking valid output | ✅ Implemented |
+| optimistic-zero-sample | 0-frame signalstats returns pass_rate=1.0, passed=True | Avoids false failures when lavfi/signalstats unavailable | ✅ Implemented |
+| per-chunk-fallback | Wav2Lip tried per-chunk, not whole-video, when LatentSync fails | More granular fallback reduces quality loss on single failed chunk | ✅ Implemented |
+| wav2lip-zero-params | inference_steps=0, guidance_scale=0.0 in LipSyncResult when fallback_used | Explicit Wav2Lip indicator without invalid LatentSync params in output | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -306,6 +315,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 07-01-PLAN.md — LatentSync conda env, checkpoints, audio_prep, latentsync_runner
+Stopped at: Completed 07-03-PLAN.md — lip_sync_stage.py orchestration, validator.py, stages/__init__.py updated
 Resume file: None
-Next: Execute 07-03 (stage orchestration, depends on 07-01 and 07-02)
+Next: Execute 07-04 (integration tests for lip sync stage)
