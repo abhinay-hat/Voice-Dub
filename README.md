@@ -475,6 +475,97 @@ python tests/test_tts_stage.py
 
 ---
 
+### Phase 7: Lip Synchronization (Complete)
+**Status**: ✅ Complete (2026-02-21)
+
+**Stage module:** `src/stages/lip_sync_stage.py`
+
+**Capabilities:**
+- Lip sync with LatentSync 1.6 (primary model, diffusion-based, ~18GB VRAM)
+- Wav2Lip GAN fallback when LatentSync fails (OOM, face detection errors, Windows InsightFace issues)
+- Automatic 5-minute chunking for long videos (prevents face detection VRAM spikes)
+- Audio resampling 48kHz → 16kHz before inference (Whisper tiny encoder requirement)
+- DeepCache enabled by default for ~2x speedup
+- Frame brightness validation after inference (advisory, never fails stage)
+- Multi-speaker awareness with warning when `speakers_detected > 1`
+
+**Overview:**
+Phase 7 takes the assembled dubbed video from Phase 6 and synchronizes the English audio to the speaker's lip movements. LatentSync 1.6 runs in an isolated conda environment because it requires `torch==2.5.1+cu121`, which conflicts with the project's PyTorch nightly (`cu128`) required for RTX 5090 sm_120 support.
+
+**Why subprocess isolation:**
+LatentSync 1.6 pins `torch==2.5.1+cu121` (CUDA 12.1). The Voice Dub project requires PyTorch nightly (`cu128`) for RTX 5090's compute capability sm_120 — PyTorch stable releases do not support sm_120. Installing both in the same environment causes a PyTorch version conflict that breaks either LatentSync inference or the main pipeline's GPU support. The solution is to run LatentSync in an isolated conda environment (`latentsync`) invoked via Python subprocess. The main pipeline manages all orchestration and file I/O; the subprocess handles only inference.
+
+**Installation (one-time setup):**
+```bash
+# Create isolated conda environment for LatentSync
+conda create -y -n latentsync python=3.10.13
+conda run -n latentsync conda install -y -c conda-forge ffmpeg
+
+# Clone LatentSync and install dependencies
+git clone https://github.com/bytedance/LatentSync.git models/LatentSync
+conda run -n latentsync pip install -r models/LatentSync/requirements.txt
+
+# Download model checkpoints (~3GB)
+conda run -n latentsync huggingface-cli download ByteDance/LatentSync-1.6 latentsync_unet.pt --local-dir models/LatentSync/checkpoints
+conda run -n latentsync huggingface-cli download ByteDance/LatentSync-1.6 whisper/tiny.pt --local-dir models/LatentSync/checkpoints/whisper
+
+# (Optional) Wav2Lip fallback
+git clone https://github.com/Rudrabha/Wav2Lip.git models/Wav2Lip
+# Download wav2lip_gan.pth from Google Drive link in Wav2Lip README
+```
+
+**Usage:**
+```python
+from pathlib import Path
+from src.stages.lip_sync_stage import run_lip_sync_stage
+
+result = run_lip_sync_stage(
+    assembled_video_path=Path("data/outputs/assembled_video.mp4"),
+    output_dir=Path("data/outputs"),
+    inference_steps=20,      # 20 = fast, 40-50 = higher quality
+    guidance_scale=1.5,      # LatentSync default
+    enable_deepcache=True,   # ~2x speedup
+    speakers_detected=1,     # Pass > 1 for multi-speaker videos (best-effort)
+    progress_callback=lambda p, s: print(f"Lip sync: {p:.0%} — {s}"),
+)
+
+print(f"Model: {result.model_used} v{result.model_version}")
+print(f"Fallback used: {result.fallback_used}")
+print(f"Output: {result.output_path}")
+if result.sync_validation:
+    print(f"Sync validation: {result.sync_validation.pass_rate:.0%} frames passed")
+```
+
+**Long video handling:**
+Videos longer than 5 minutes are automatically split into 5-minute chunks, each processed individually through LatentSync (or Wav2Lip on chunk failure), then concatenated via FFmpeg concat demuxer with stream copy. This prevents face detection VRAM spikes that occur on long continuous segments.
+
+**Multi-speaker limitation:**
+LatentSync processes the full frame without per-speaker face routing. When `speakers_detected > 1`, the stage logs a warning and sets `result.multi_speaker_mode = True`, but sync quality may vary per speaker since LatentSync targets a single dominant face. Per-speaker face routing (region-of-interest detection per speaker turn) is Phase 8 territory.
+
+**Sync validation:**
+After inference, `validate_lip_sync_output()` samples frames at 1-second intervals and checks mean luma (YAVG brightness) via FFmpeg signalstats as a proxy for face detection quality. A frame with YAVG below 10 is classified as a black/corrupt frame. Results are returned in `result.sync_validation`. A pass_rate below 95% logs an advisory warning but never fails the stage — the output is always returned for downstream processing.
+
+**Key decisions:**
+- Subprocess isolation: LatentSync torch 2.5.1+cu121 vs project PyTorch nightly (cu128)
+- Audio always resampled 48kHz → 16kHz before LatentSync (Whisper tiny encoder requirement)
+- 5-minute chunking: prevents face detection VRAM spikes for long videos
+- DeepCache enabled by default: ~2x speedup (requires latest LatentSync main, commit f5040cf+)
+- Lightweight validation: frame brightness proxy (SyncNet evaluation planned for Phase 8)
+- Per-chunk fallback: Wav2Lip tried per-chunk, not whole-video, when LatentSync fails
+
+**Testing:**
+```bash
+python tests/test_lip_sync_stage.py
+# 21 integration tests, all pass without GPU or LatentSync conda env
+```
+
+**Requirements:**
+- LatentSync conda environment with `torch==2.5.1+cu121` (isolated from main venv)
+- ~18GB VRAM for LatentSync 1.6 inference (falls back to Wav2Lip at ~2-4GB)
+- FFmpeg available in PATH for audio resampling, chunking, and concatenation
+
+---
+
 ### Phase 6: Audio-Video Assembly (Complete)
 **Status**: ✅ Complete (2026-02-03)
 
@@ -707,11 +798,11 @@ These settings are automatically applied via `src/utils/gpu_validation.py`.
 | 4. Translation Pipeline | 4/4 | Complete | 2026-01-31 |
 | 5. Voice Cloning & TTS | 4/4 | Complete | 2026-02-02 |
 | 6. Audio-Video Assembly | 3/3 | Complete | 2026-02-03 |
-| 7. Lip Synchronization | - | Planned | - |
+| 7. Lip Synchronization | 4/4 | Complete | 2026-02-21 |
 | 8. Quality Review UI | - | Planned | - |
 | 9. Video Upload UI | - | Planned | - |
 | 10. Complete Pipeline Integration | - | Planned | - |
 | 11. Production Hardening | - | Planned | - |
 
-**Current Status**: Phase 6 Complete - Audio-Video Assembly with drift-free synchronization ready
-**Next**: Phase 7 - Lip Synchronization
+**Current Status**: Phase 7 Complete - Lip Synchronization with LatentSync 1.6 and Wav2Lip fallback ready
+**Next**: Phase 8 - Quality Review UI
