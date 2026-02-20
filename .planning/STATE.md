@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Watch any video content in English while preserving the original speaker's voice characteristics and emotional expression, without relying on cloud services or paying API fees.
-**Current focus:** Phase 7: Lip Synchronization (executing)
+**Current focus:** Phase 8: Quality Review UI (next)
 
 ## Current Position
 
 Phase: 7 of 11 (Lip Synchronization)
-Plan: 3 of 4 (07-01, 07-02, and 07-03 complete)
-Status: In progress — Wave 1 and 07-03 complete; 07-04 (integration tests) pending
-Last activity: 2026-02-20 — Completed 07-03: lip_sync_stage.py orchestration, validator.py
+Plan: 4 of 4 (07-01, 07-02, 07-03, and 07-04 complete)
+Status: Phase 7 complete — all 4 plans done
+Last activity: 2026-02-21 — Completed 07-04: integration tests and README Phase 7 documentation
 
-Progress: [█████████░] 88%
+Progress: [█████████░] 90%
 
 ## Performance Metrics
 
@@ -33,10 +33,11 @@ Progress: [█████████░] 88%
 | 04    | 4     | 126m  | 31.5m    |
 | 05    | 4     | 19m   | 4.8m     |
 | 06    | 3     | 21m   | 7m       |
+| 07    | 4     | ~70m  | ~18m     |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (3m), 06-02 (6m), 06-03 (12m), 07-01 (18m)
-- Trend: Phase 7 in progress; 07-01 longer due to Miniconda install + checkpoint downloads
+- Last 5 plans: 06-03 (12m), 07-01 (18m), 07-02 (~15m), 07-03 (~34m), 07-04 (3m)
+- Trend: Phase 7 complete; 07-03 longer due to orchestration complexity; 07-04 fast due to clear spec
 
 *Updated after each plan completion*
 
@@ -249,6 +250,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | per-chunk-fallback | Wav2Lip tried per-chunk, not whole-video, when LatentSync fails | More granular fallback reduces quality loss on single failed chunk | ✅ Implemented |
 | wav2lip-zero-params | inference_steps=0, guidance_scale=0.0 in LipSyncResult when fallback_used | Explicit Wav2Lip indicator without invalid LatentSync params in output | ✅ Implemented |
 
+**Phase 07-04 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| 21-tests-not-17 | 21 integration tests instead of plan minimum 17 | Additional tests for constants, serialization edge cases, and parameter signature validation | ✅ Implemented |
+| stage-level-mock | Mock validate_lip_sync_output at stage level not ffprobe | Cleaner since stage catches all validator exceptions anyway | ✅ Implemented |
+| sync-validation-none-case | Test sync_validation=None separately | Explicitly covers advisory-only exception handling path | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -312,9 +321,21 @@ None yet.
 - ✅ 12-function integration test suite (479 lines, 100% pass rate) (06-03)
 - ✅ Complete Phase 6 documentation in README (06-03)
 
+**Phase 7 Complete:** Lip Synchronization (4/4 plans complete, 2026-02-21)
+- ✅ LatentSync conda env with torch 2.5.1+cu121 isolated from main nightly env (07-01)
+- ✅ models/LatentSync/ cloned with latentsync_unet.pt and whisper/tiny.pt checkpoints (07-01)
+- ✅ src/lip_sync/audio_prep.py: 48kHz→16kHz FFmpeg resampler (07-01)
+- ✅ src/lip_sync/latentsync_runner.py: subprocess wrapper for isolated conda env (07-01)
+- ✅ src/lip_sync/wav2lip_runner.py: Wav2Lip GAN fallback with s3fd.pth safety guard (07-02)
+- ✅ src/lip_sync/chunker.py: VideoChunk dataclass, split/concatenate for long videos (07-02)
+- ✅ src/lip_sync/validator.py: SyncValidation dataclass, brightness proxy validation (07-03)
+- ✅ src/stages/lip_sync_stage.py: LipSyncResult (12 fields), run_lip_sync_stage() (07-03)
+- ✅ 21-function integration test suite (816 lines, 100% pass rate) (07-04)
+- ✅ Phase 7 documentation in README with conda setup and subprocess isolation rationale (07-04)
+
 ## Session Continuity
 
-Last session: 2026-02-20
-Stopped at: Completed 07-03-PLAN.md — lip_sync_stage.py orchestration, validator.py, stages/__init__.py updated
+Last session: 2026-02-21
+Stopped at: Completed 07-04-PLAN.md — integration tests (21 tests, 816 lines) and README Phase 7 documentation
 Resume file: None
-Next: Execute 07-04 (integration tests for lip sync stage)
+Next: Execute Phase 8 (Quality Review UI)
