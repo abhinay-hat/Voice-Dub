@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 7 of 11 (Lip Synchronization)
-Plan: 2 of 4 (07-02 complete)
+Plan: 2 of 4 (07-01 and 07-02 complete)
 Status: In progress — Plans 07-01 and 07-02 complete (wave 1 done); 07-03 and 07-04 pending
-Last activity: 2026-02-20 — Completed 07-02: Wav2Lip runner and video chunker
+Last activity: 2026-02-20 — Completed 07-01: LatentSync conda env, checkpoints, audio_prep, and latentsync_runner modules
 
 Progress: [█████████░] 86%
 
@@ -35,8 +35,8 @@ Progress: [█████████░] 86%
 | 06    | 3     | 21m   | 7m       |
 
 **Recent Trend:**
-- Last 5 plans: 05-04 (7.5m), 06-01 (3m), 06-02 (6m), 06-03 (12m)
-- Trend: Phase 6 complete with avg 7m per plan
+- Last 5 plans: 06-01 (3m), 06-02 (6m), 06-03 (12m), 07-01 (18m)
+- Trend: Phase 7 in progress; 07-01 longer due to Miniconda install + checkpoint downloads
 
 *Updated after each plan completion*
 
@@ -223,6 +223,15 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | format-specific-codecs | Provide different codec configs per output format | Ensures compatibility and optimal quality per format | ✅ Implemented |
 | compatibility-validation | Validate inputs with ffprobe before merge | User-friendly error messages for missing streams | ✅ Implemented |
 
+**Phase 07-01 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| subprocess-isolation | LatentSync runs in isolated conda env (torch 2.5.1+cu121) via subprocess | Prevents PyTorch version conflict with RTX 5090 nightly (cu128) | ✅ Implemented |
+| ffmpeg-resampling-not-librosa | Use FFmpeg for 48->16kHz conversion | Format-identical to LatentSync's own preprocessing; avoids extra dependency | ✅ Implemented |
+| deepcache-enabled-by-default | enable_deepcache=True default in run_latentsync_inference() | DeepCache fix (f5040cf) confirmed in repo; ~2x speedup at negligible quality cost | ✅ Implemented |
+| env-var-override | LATENTSYNC_PYTHON_PATH env var overrides hardcoded path | Portability across machines without code changes | ✅ Implemented |
+
 **Phase 07-02 Decisions:**
 
 | ID | Title | Impact | Status |
@@ -297,6 +306,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-20
-Stopped at: Completed 07-02-PLAN.md — Wav2Lip runner and video chunker
+Stopped at: Completed 07-01-PLAN.md — LatentSync conda env, checkpoints, audio_prep, latentsync_runner
 Resume file: None
 Next: Execute 07-03 (stage orchestration, depends on 07-01 and 07-02)
