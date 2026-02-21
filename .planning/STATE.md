@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Watch any video content in English while preserving the original speaker's voice characteristics and emotional expression, without relying on cloud services or paying API fees.
-**Current focus:** Phase 8: Quality Controls (next)
+**Current focus:** Phase 8: Quality Controls (in progress)
 
 ## Current Position
 
-Phase: 7 of 11 (Lip Synchronization) — COMPLETE
-Plan: 4/4 complete
-Status: Phase 7 verified and complete — ready for Phase 8
-Last activity: 2026-02-21 — Phase 7 executed and verified (4/4 plans, 21 tests passing)
+Phase: 8 of 11 (Quality Controls) — In Progress
+Plan: 1/4 complete
+Status: In progress — 08-01 (Gradio UI Scaffold) complete
+Last activity: 2026-02-21 — Completed 08-01-PLAN.md (Gradio Blocks UI scaffold, 2 tasks)
 
 Progress: [█████████░] 90%
 
@@ -258,6 +258,12 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | stage-level-mock | Mock validate_lip_sync_output at stage level not ffprobe | Cleaner since stage catches all validator exceptions anyway | ✅ Implemented |
 | sync-validation-none-case | Test sync_validation=None separately | Explicitly covers advisory-only exception handling path | ✅ Implemented |
 
+**Phase 08-01 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| theme-at-launch | Pass gr.themes.Soft() to launch() not Blocks() | Gradio 6.0 moved theme from Blocks constructor to launch(); avoids UserWarning | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -336,6 +342,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Phase 7 complete and verified — 4/4 plans, 21 tests passing, VERIFICATION.md passed
+Stopped at: Completed 08-01-PLAN.md — Gradio UI scaffold (src/ui/app.py, src/ui/__init__.py, src/app.py updated)
 Resume file: None
-Next: /gsd:plan-phase 8
+Next: /gsd:execute-phase 08-02 (pipeline runner)
