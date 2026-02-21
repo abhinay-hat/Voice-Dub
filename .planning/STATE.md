@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 8 of 11 (Quality Controls) — In Progress
-Plan: 2/4 complete
-Status: In progress — 08-02 (Stage Validators + Clip Preview) complete
-Last activity: 2026-02-21 — Completed 08-02-PLAN.md (4 validators, clip extractor, 30 TDD tests)
+Plan: 3/4 complete
+Status: In progress — 08-03 (Pipeline Runner) complete
+Last activity: 2026-02-21 — Completed 08-03-PLAN.md (run_asr_ui, run_full_pipeline, cancel_pipeline, 510 lines)
 
 Progress: [█████████░] 90%
 
@@ -272,6 +272,16 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | duck-typing-validators | Validators use getattr() with defaults instead of isinstance() checks | Any object with matching attrs works (SimpleNamespace mocks, real dataclasses) | ✅ Implemented |
 | tts-failed-segments-int | TTSResult.failed_segments is an int count (not a list) | validate_tts_output() uses count directly — confirmed from source inspection | ✅ Confirmed |
 
+**Phase 08-03 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| lazy-stage-imports | Stage modules imported lazily inside generator bodies | Prevents cascading pyannote/TTS/InsightFace imports when pipeline_runner.py loads | ✅ Implemented |
+| assembly-tts-result-json | run_assembly_stage uses tts_result_path pointing to tts_result.json | Assembly reads audio paths from JSON file, not segments list in memory | ✅ Implemented |
+| lip-sync-assembled-video-path | run_lip_sync_stage uses assembled_video_path + output_dir only | Audio extracted internally from assembled video — no separate audio_path needed | ✅ Implemented |
+| translation-explicit-output-path | run_translation_stage requires explicit output_json_path for result.output_path | No video_id param; video_id read from JSON; output path enables downstream stage | ✅ Implemented |
+| detected-language-und | _write_edited_transcript writes detected_language="und" | Language not preserved in DataFrame; SeamlessM4T re-detects from source text | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -350,6 +360,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 08-02-PLAN.md — Stage validators + clip preview (src/ui/validators.py, src/ui/clip_preview.py, tests/test_ui_validators.py)
+Stopped at: Completed 08-03-PLAN.md — Pipeline runner (src/ui/pipeline_runner.py, 510 lines, run_asr_ui + run_full_pipeline + cancel_pipeline)
 Resume file: None
-Next: /gsd:execute-phase 08-03 (pipeline runner)
+Next: /gsd:execute-phase 08-04 (event wiring — connect Gradio buttons to generator functions)
