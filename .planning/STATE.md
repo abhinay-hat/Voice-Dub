@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 8 of 11 (Quality Controls) — In Progress
-Plan: 1/4 complete
-Status: In progress — 08-01 (Gradio UI Scaffold) complete
-Last activity: 2026-02-21 — Completed 08-01-PLAN.md (Gradio Blocks UI scaffold, 2 tasks)
+Plan: 2/4 complete
+Status: In progress — 08-02 (Stage Validators + Clip Preview) complete
+Last activity: 2026-02-21 — Completed 08-02-PLAN.md (4 validators, clip extractor, 30 TDD tests)
 
 Progress: [█████████░] 90%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
-- Average duration: 27 minutes
-- Total execution time: 9.8 hours
+- Total plans completed: 20
+- Average duration: 26 minutes
+- Total execution time: 9.9 hours
 
 **By Phase:**
 
@@ -264,6 +264,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 |----|-------|--------|--------|
 | theme-at-launch | Pass gr.themes.Soft() to launch() not Blocks() | Gradio 6.0 moved theme from Blocks constructor to launch(); avoids UserWarning | ✅ Implemented |
 
+**Phase 08-02 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| type-checking-imports | Use TYPE_CHECKING for stage result type imports in validators.py | Validators importable without pyannote/torch/TTS installed (test environments) | ✅ Implemented |
+| duck-typing-validators | Validators use getattr() with defaults instead of isinstance() checks | Any object with matching attrs works (SimpleNamespace mocks, real dataclasses) | ✅ Implemented |
+| tts-failed-segments-int | TTSResult.failed_segments is an int count (not a list) | validate_tts_output() uses count directly — confirmed from source inspection | ✅ Confirmed |
+
 ### Pending Todos
 
 None yet.
@@ -342,6 +350,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-21
-Stopped at: Completed 08-01-PLAN.md — Gradio UI scaffold (src/ui/app.py, src/ui/__init__.py, src/app.py updated)
+Stopped at: Completed 08-02-PLAN.md — Stage validators + clip preview (src/ui/validators.py, src/ui/clip_preview.py, tests/test_ui_validators.py)
 Resume file: None
-Next: /gsd:execute-phase 08-02 (pipeline runner)
+Next: /gsd:execute-phase 08-03 (pipeline runner)
