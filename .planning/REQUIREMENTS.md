@@ -44,10 +44,10 @@
 
 ### Quality Controls
 
-- [ ] **QC-01**: User can edit transcript text before dubbing begins
-- [ ] **QC-02**: User can preview 10-30 second clips before full render
-- [ ] **QC-03**: System shows real-time progress through pipeline stages
-- [ ] **QC-04**: System validates each pipeline stage before proceeding to next
+- [x] **QC-01**: User can edit transcript text before dubbing begins
+- [x] **QC-02**: User can preview 10-30 second clips before full render
+- [x] **QC-03**: System shows real-time progress through pipeline stages
+- [x] **QC-04**: System validates each pipeline stage before proceeding to next
 
 ### Batch Processing
 
@@ -141,10 +141,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SYNC-02 | Phase 7 | Complete |
 | SYNC-03 | Phase 7 | Complete |
 | SYNC-04 | Phase 7 | Complete |
-| QC-01 | Phase 8 | Pending |
-| QC-02 | Phase 8 | Pending |
-| QC-03 | Phase 8 | Pending |
-| QC-04 | Phase 8 | Pending |
+| QC-01 | Phase 8 | Complete |
+| QC-02 | Phase 8 | Complete |
+| QC-03 | Phase 8 | Complete |
+| QC-04 | Phase 8 | Complete |
 | BATCH-01 | Phase 10 | Pending |
 | BATCH-02 | Phase 10 | Pending |
 | BATCH-03 | Phase 10 | Pending |
