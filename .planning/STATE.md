@@ -9,12 +9,21 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 8 of 11 (Quality Controls) — In Progress
-Plan: 3/4 complete
-Status: In progress — 08-03 (Pipeline Runner) complete
-Last activity: 2026-02-21 — Completed 08-03-PLAN.md (run_asr_ui, run_full_pipeline, cancel_pipeline, 510 lines)
+Phase: 8 of 11 (Quality Controls) — Complete
+Plan: 4/4 complete
+Status: Phase complete — 08-04 (Event Handler Wiring) complete
+Last activity: 2026-02-22 — Completed 08-04-PLAN.md (7 event handlers wired, 22 integration tests, human-verified)
 
-Progress: [█████████░] 90%
+Progress: [██████████] 100% (Phase 8)
+
+### Phase 8 Plans
+
+| Plan | Name | Status | SUMMARY |
+|------|------|--------|---------|
+| 08-01 | Gradio UI Scaffold | Complete | .planning/phases/08-quality-controls/08-01-SUMMARY.md |
+| 08-02 | Stage Validators + Clip Preview | Complete | .planning/phases/08-quality-controls/08-02-SUMMARY.md |
+| 08-03 | Pipeline Runner | Complete | .planning/phases/08-quality-controls/08-03-SUMMARY.md |
+| 08-04 | Event Handler Wiring | Complete | .planning/phases/08-quality-controls/08-04-SUMMARY.md |
 
 ## Performance Metrics
 
@@ -282,6 +291,14 @@ Research assumed AMD GPU/ROCm, but actual hardware is RTX 5090 (32GB VRAM) + CUD
 | translation-explicit-output-path | run_translation_stage requires explicit output_json_path for result.output_path | No video_id param; video_id read from JSON; output path enables downstream stage | ✅ Implemented |
 | detected-language-und | _write_edited_transcript writes detected_language="und" | Language not preserved in DataFrame; SeamlessM4T re-detects from source text | ✅ Implemented |
 
+**Phase 08-04 Decisions:**
+
+| ID | Title | Impact | Status |
+|----|-------|--------|--------|
+| demo-queue-at-app-level | demo.queue(default_concurrency_limit=1) inside create_app() | Caps concurrent streaming generators to 1 for RTX 5090 single-GPU stability | ✅ Implemented |
+| cancels-pipeline-event | cancel_btn uses cancels=[pipeline_event] + _cancel_event.set() | Dual cancellation: Gradio interrupt (immediate) + stage-boundary check (graceful) | ✅ Implemented |
+| 22-tests-not-6-minimum | 22 integration tests instead of plan's 6 minimum | Covers 6-tuple yield structure, None token, confidence flagging, duration computation edge cases | ✅ Implemented |
+
 ### Pending Todos
 
 None yet.
@@ -345,6 +362,15 @@ None yet.
 - ✅ 12-function integration test suite (479 lines, 100% pass rate) (06-03)
 - ✅ Complete Phase 6 documentation in README (06-03)
 
+**Phase 8 Complete:** Quality Controls (4/4 plans complete, 2026-02-22)
+- ✅ Gradio UI scaffold (4-step workflow, Soft theme, upload/review/processing/output columns) (08-01)
+- ✅ Stage validators for ASR/Translation/TTS/LipSync quality gates (08-02)
+- ✅ Clip preview extractor for 30s preview before processing (08-02)
+- ✅ Generator-based pipeline runner with streaming progress and cancellation (08-03)
+- ✅ All 7 event handlers wired: ASR, preview, full pipeline, cancel, back, restart, video-info (08-04)
+- ✅ 22 integration tests (no GPU required) (08-04)
+- ✅ Human-verified: UI launches at localhost:7860, error handling without crash (08-04)
+
 **Phase 7 Complete:** Lip Synchronization (4/4 plans complete, 2026-02-21)
 - ✅ LatentSync conda env with torch 2.5.1+cu121 isolated from main nightly env (07-01)
 - ✅ models/LatentSync/ cloned with latentsync_unet.pt and whisper/tiny.pt checkpoints (07-01)
@@ -359,7 +385,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-21
-Stopped at: Completed 08-03-PLAN.md — Pipeline runner (src/ui/pipeline_runner.py, 510 lines, run_asr_ui + run_full_pipeline + cancel_pipeline)
+Last session: 2026-02-22
+Stopped at: Completed 08-04-PLAN.md — Event handler wiring (src/ui/app.py 7 handlers, tests/test_ui_integration.py 22 tests, human-verified)
 Resume file: None
-Next: /gsd:execute-phase 08-04 (event wiring — connect Gradio buttons to generator functions)
+Next: Phase 9 (packaging/deployment) — /gsd:execute-phase 09
