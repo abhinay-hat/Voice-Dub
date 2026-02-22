@@ -176,10 +176,13 @@ Plans:
   3. No GPU OOM errors during 20-minute video processing
   4. GPU utilization above 80% during inference stages (Whisper, SeamlessM4T, XTTS, Wav2Lip)
   5. Model loading uses lazy initialization and LRU unloading for memory efficiency
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 09-01-PLAN.md — LRU multi-slot ModelManager and PerformanceBenchmarker utilities
+- [ ] 09-02-PLAN.md — BatchedInferencePipeline for faster Whisper ASR
+- [ ] 09-03-PLAN.md — XTTS conditioning latent caching and CPU-first storage
+- [ ] 09-04-PLAN.md — Stage instrumentation, benchmark test suite, and integration harness
 
 ### Phase 10: Batch Processing
 **Goal**: Users can queue multiple videos and system processes them sequentially with status tracking and cancellation support.
@@ -226,10 +229,10 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. Audio-Video Assembly | 3/3 | Complete | 2026-02-03 |
 | 7. Lip Synchronization | 4/4 | Complete | 2026-02-21 |
 | 8. Quality Controls | 4/4 | Complete | 2026-02-22 |
-| 9. Performance Optimization | 0/TBD | Not started | - |
+| 9. Performance Optimization | 0/4 | Not started | - |
 | 10. Batch Processing | 0/TBD | Not started | - |
 | 11. User Experience Polish | 0/TBD | Not started | - |
 
 ---
 *Created: 2026-01-31*
-*Last updated: 2026-02-22 (Phase 8 complete)*
+*Last updated: 2026-02-22 (Phase 9 planned)*
